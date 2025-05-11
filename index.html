@@ -10,28 +10,23 @@
             color: white;
         }
  .timeline-container {
-    width: 100% !important; /* Ensure full width */
-    max-width: none !important; /* Remove restrictions */
-    position: relative; /* Ensure child elements are positioned properly */
-    overflow-x: auto; /* Allow horizontal scrolling */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
 }
 
-        }
-
-        .timeline {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-scrollbar-width: none; /* Hides scrollbar in Firefox */
-
-        }
-
-
+.timeline {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hides scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
 }
 
-.timeline-container::-webkit-scrollbar {
-    display: none; /* Hides scrollbar in Chrome & Edge */
+.timeline::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
 }
 
 .event:hover {
