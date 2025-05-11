@@ -10,12 +10,10 @@
             color: white;
         }
  .timeline-container {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    padding: 20px;
+    width: 100% !important; /* Ensure full width */
     max-width: none !important; /* Remove restrictions */
-    overflow: hidden; /* Prevent content from spilling */
+    position: relative; /* Ensure child elements are positioned properly */
+    overflow-x: auto; /* Allow horizontal scrolling */
 }
 
         }
