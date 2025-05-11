@@ -15,6 +15,7 @@
     position: relative;
     padding: 20px;
      pointer-events: auto;
+     z-index: auto; /* No stacking context created */
 }
 
 .timeline {
@@ -25,6 +26,7 @@
     scrollbar-width: none; /* Hides scrollbar in Firefox */
     -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
     pointer-events: auto;
+    z-index: auto; /* No stacking context created */
 }
 
 .timeline::-webkit-scrollbar {
