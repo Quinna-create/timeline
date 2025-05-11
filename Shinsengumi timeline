@@ -127,15 +127,46 @@ text-align: left;
 .scroll-left:hover, .scroll-right:hover {
     background-color: rgba(255, 255, 255, 0.6); /* Highlight effect */
 } 
- 
+ .scroll-left img, .scroll-right img {
+    width: 30px; /* Adjust size as needed */
+    height: 30px; /* Adjust size as needed */
+}
+
+.scroll-left, .scroll-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent; /* Remove button background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding for precise image placement */
+    cursor: pointer;
+}
+
+.scroll-left {
+    left: 10px;
+}
+
+.scroll-right {
+    right: 10px;
+}
+
+.scroll-left:hover img, .scroll-right:hover img {
+    filter: brightness(1.2); /* Optional: Brighten on hover */
+    transform: scale(1.1); /* Optional: Slight enlargement on hover */
+    transition: 0.3s ease-in-out;
+}
 </style>
 </head>
 <body>
 
     <div class="timeline-container">
-        <button class="scroll-left">⬅️</button>
+        <button class="scroll-left">
+    <img src="assets/left-arrow.png" alt="Scroll Left">
+</button>
         <div class="timeline"></div>
-        <button class="scroll-right">➡️</button>
+        <button class="scroll-right">
+    <img src="assets/right-arrow.png" alt="Scroll Right">
+</button>
     </div>
 
     <script>
