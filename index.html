@@ -27,6 +27,7 @@
     -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
     pointer-events: auto;
     z-index: auto; /* No stacking context created */
+    position: relative; /* Keep the timeline positioned properly */
 }
 
 .timeline::-webkit-scrollbar {
@@ -88,30 +89,34 @@ text-align: left;
 
 }
 
-        .scroll-left, .scroll-right {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.3);
-            border: none;
-            color: white;
-            font-size: 24px;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            z-index: 100; /* Ensure the buttons appear above the event boxes */
-        }
-
-        .scroll-left { left: 10px; }
-        .scroll-right { right: 10px; }
         
-        .scroll-left:hover, .scroll-right:hover {
-            background-color: rgba(255, 255, 255, 0.6);
-        }
+        .scroll-left, .scroll-right {
+    position: fixed; /* Fix the buttons to the viewport */
+    top: 50%; /* Center vertically in the viewport */
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1000; /* Ensure buttons stay above the event boxes */
+}
 
+.scroll-left {
+    left: 10px; /* Align the left button */
+}
+
+.scroll-right {
+    right: 10px; /* Align the right button */
+}
 
 .scroll-left:hover, .scroll-right:hover {
-    background-color: rgba(255, 255, 255, 0.6); /* Highlight effect */
+    background-color: rgba(255, 255, 255, 0.6); /* Highlight on hover */
+}}
+
+
 } 
  .scroll-left img, .scroll-right img {
     width: 30px; /* Adjust size as needed */
