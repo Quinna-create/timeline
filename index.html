@@ -85,9 +85,9 @@
 
         
 .scroll-left, .scroll-right {
-    position: fixed; /* Fix the buttons to the viewport */
-    top: 50%; /* Center vertically in the viewport */
-    transform: translateY(-50%);
+    position: absolute; /* Position relative to .timeline-container */
+    top: 50%; /* Center vertically relative to .timeline-container */
+    transform: translateY(-50%); /* Adjust for exact vertical centering */
     background-color: transparent; /* Remove button background */
     border: none; /* Remove button border */
     padding: 0; /* Remove padding to avoid extra space */
