@@ -39,10 +39,20 @@
     transform: scale(1.05); /* Slight enlargement */
     transition: 0.3s ease-in-out;
 }
-        .event {
-    -webkit-tap-highlight-color: transparent; /* Prevent touch highlight */
-    touch-action: manipulation; /* Ensure touch interaction works */
-}
+
+.event {
+    display: inline-block;
+    min-width: 250px; /* Base width */
+    width: auto; /* Allows individual expansion */
+    max-width: none; /* Removes artificial width limits */
+    padding: 15px;
+    background: #3a3a3a;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
+}  
+       
         
 .japanese-date {
     font-size: 24px;
@@ -54,18 +64,7 @@
     font-size: 16px;
     color: #555;
 }
- .event {
-    display: inline-block;
-    min-width: 250px; /* Base width */
-    width: auto; /* Allows individual expansion */
-    max-width: none; /* Removes artificial width limits */
-    padding: 15px;
-    background: #3a3a3a;
-    border-radius: 10px;
-    text-align: center;
-    color: white;
-    box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
-}
+ 
      
 .description {
     font-size: 14px;
@@ -85,7 +84,7 @@
     
 
         
-   .scroll-left, .scroll-right {
+.scroll-left, .scroll-right {
     position: fixed; /* Fix the buttons to the viewport */
     top: 50%; /* Center vertically in the viewport */
     transform: translateY(-50%);
@@ -97,7 +96,7 @@
     z-index: 1000; /* Ensure buttons stay above other elements */
 }
 
-        .scroll-left {
+.scroll-left {
     left: 10px; /* Align to the left side */
 }
 
