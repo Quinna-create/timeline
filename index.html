@@ -90,27 +90,18 @@ text-align: left;
 }
 
         
-        .scroll-left, .scroll-right {
+       .scroll-left, .scroll-right {
     position: fixed; /* Fix the buttons to the viewport */
     top: 50%; /* Center vertically in the viewport */
     transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.3);
-    border: none;
-    color: white;
-    font-size: 24px;
-    padding: 10px 15px;
+    background-color: transparent; /* Remove button background */
+    border: none; /* Remove button border */
+    padding: 0; /* Remove padding to avoid extra space */
     cursor: pointer;
-    border-radius: 5px;
-    z-index: 1000; /* Ensure buttons stay above the event boxes */
+    z-index: 1000; /* Ensure buttons stay above other elements */
 }
 
-.scroll-left {
-    left: 10px; /* Align the left button */
-}
 
-.scroll-right {
-    right: 10px; /* Align the right button */
-}
 
 .scroll-left:hover, .scroll-right:hover {
     background-color: rgba(255, 255, 255, 0.6); /* Highlight on hover */
@@ -119,19 +110,12 @@ text-align: left;
 
 } 
  .scroll-left img, .scroll-right img {
-    width: 30px; /* Adjust size as needed */
-    height: 30px; /* Adjust size as needed */
+    width: 30px; /* Constrain the width to 30px */
+    height: 30px; /* Constrain the height to 30px */
+    object-fit: contain; /* Ensure the image scales proportionally */
+    display: block; /* Ensure no extra spacing around the image */
 }
 
-
-.scroll-left {
-    left: 10px;
-}
-
-.scroll-right {
-    right: 5% !important; /* Adjust the value as needed */
-}
-}
 
 .scroll-left:hover img, .scroll-right:hover img {
     filter: brightness(1.2); /* Optional: Brighten on hover */
