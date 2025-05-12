@@ -14,6 +14,7 @@
     overflow: hidden;
     position: relative;
     padding: 0px;
+     margin: 0; /* Remove extra margin */
      pointer-events: auto;
      z-index: auto; /* No stacking context created */
 }
@@ -102,7 +103,7 @@
 }
 
 .scroll-right {
-    right: 10px; /* Align to the right side */
+    right: 1%; /* Dynamically adjusts to container width */
 }
         
 .scroll-left img, .scroll-right img {
