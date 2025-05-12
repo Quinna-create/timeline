@@ -13,12 +13,13 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    padding: 20px;
+    padding: 0px;
      pointer-events: auto;
      z-index: auto; /* No stacking context created */
 }
 
 .timeline {
+    height: 100%; /* Make the timeline fill the container */
     display: flex;
     gap: 20px;
     overflow-x: auto; /* Enables horizontal scrolling */
