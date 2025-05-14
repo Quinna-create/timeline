@@ -63,6 +63,11 @@
     opacity: 1; /* Make visible */
     transform: translateX(0); /* Slide into place */
 }
+
+        .event.hidden {
+    opacity: 0.3; /* Keep event semi-visible instead of fully disappearing */
+    transform: translateX(-50px); /* Slight shift when scrolling up */
+}
         
         .event-content {
     padding: 10px;
@@ -179,13 +184,15 @@
     (entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add("visible"); // Slide in when entering view
+                entry.target.classList.add("visible"); // Slide in when appearing
+                entry.target.classList.remove("hidden"); // Remove fade-out class
             } else {
-                entry.target.classList.remove("visible"); // Slide out when leaving view
+                entry.target.classList.add("hidden"); // Slightly fade out when scrolling up
+                entry.target.classList.remove("visible"); // Remove slide-in effect
             }
         });
     },
-    { threshold: 0.1 } // Adjust for smoother effect
+    { threshold: 0.2 } // Slightly higher threshold for smoother effect
 );
     // Render events dynamically
     events.forEach((event, index) => {
