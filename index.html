@@ -18,8 +18,11 @@
             width: 80%;
             margin: 50px auto;
             padding: 20px 0;
+            overflow-y: auto;
+            max-height: 100vh; /* Allows scrolling within the viewport */
         }
-
+    
+             
         .vertical-line {
             position: absolute;
             left: 50%;
@@ -31,28 +34,43 @@
         }
 
         .event {
-            position: relative;
-            margin: 30px 0;
-            width: 45%;
-        }
+    position: relative;
+    margin: 30px 0;
+    width: 45%;
+    opacity: 0; /* Initially hidden for animation */
+    transition: opacity 0.5s, transform 0.5s;
+       }
 
         .event.right {
-            float: right;
-            text-align: left;
-        }
+    float: right;
+    text-align: left;
+    transform: translateX(100%); /* Slide in from the right */
+       }
 
         .event.left {
-            float: left;
-            text-align: right;
-        }
+    float: left;
+    text-align: right;
+    transform: translateX(-100%); /* Slide in from the left */
+}
 
+        .event.visible {
+    opacity: 1;
+    transform: translateX(0); /* Slide into view */
+    }
+        
         .event-content {
-            padding: 10px;
-            background: #3a3a3a;
-            border-radius: 10px;
-            box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
-        }
+    padding: 10px;
+    background: #3a3a3a;
+    border-radius: 10px;
+    box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+ }
 
+        .event:hover .event-content {
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+        }
+        
         .event::before {
             content: '';
             position: absolute;
@@ -65,13 +83,13 @@
             z-index: 10;
         }
 
-        .event.right::before {
-            left: -10px;
-        }
-
-        .event.left::before {
-            right: -10px;
-        }
+      .event.right::before {
+    left: -10px; /* Connector to the vertical line */
+}
+      
+    .event.left::before {
+    right: -10px; /* Connector to the vertical line */
+}
 
         .japanese-date {
             font-size: 24px;
@@ -99,8 +117,10 @@
 </head>
 <body>
   <div class="timeline-container">
-        <div class="timeline"></div>
-    </div>
+    <div class="vertical-line"></div>
+    <div class="timeline"></div>
+</div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const timeline = document.querySelector(".timeline");
@@ -145,41 +165,37 @@
             // **Sort events by year**
             events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
-            // **Render events dynamically**
-            events.forEach(event => {
+             // Render events dynamically
+            events.forEach((event, index) => {
                 const eventDiv = document.createElement("div");
-                eventDiv.className = "event";
+                eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
                 eventDiv.innerHTML = `
-                    <div class="japanese-date">${event.japanese}</div>
-                    <div class="western-year">${event.western}</div>
-                    <div class="description">${event.description}</div>
+                    <div class="event-content">
+                        <div class="japanese-date">${event.japanese}</div>
+                        <div class="western-year">${event.western}</div>
+                        <div class="description">${event.description}</div>
+                    </div>
                 `;
                 timeline.appendChild(eventDiv);
             });
 
-            // **Button-based scrolling**
-            leftButton.addEventListener("click", function () {
-                timeline.scrollLeft -= 300;
+            // Add slide-in animation using IntersectionObserver
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
             });
-
-            rightButton.addEventListener("click", function () {
-                timeline.scrollLeft += 300;
-            });
-
-            // **Hover effects fallback**
-            const eventElements = document.querySelectorAll(".event");
-            eventElements.forEach(event => {
-                event.addEventListener("mouseenter", function () {
-                    this.style.boxShadow = "0px 0px 10px rgba(255, 255, 255, 0.5)";
-                    this.style.transform = "scale(1.05)";
-                    this.style.transition = "0.3s ease-in-out";
-                });
-
-                event.addEventListener("mouseleave", function () {
-                    this.style.boxShadow = "none";
-                    this.style.transform = "scale(1)";
-                });
-            });
+        },
+        { threshold: 0.1 }
+    );
+            
+document.querySelectorAll(".event").forEach((event) => {
+        observer.observe(event);
+        
+           });
         });
     </script>
 </body>
