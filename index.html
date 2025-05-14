@@ -169,7 +169,6 @@
 
              // Render events dynamically
             events.forEach((event, index) => {
-                console.log("Rendering event:", event); // Debugging
                 const eventDiv = document.createElement("div");
                 eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
                 eventDiv.innerHTML = `
@@ -180,6 +179,9 @@
                     </div>
                 `;
                 timeline.appendChild(eventDiv);
+
+                // Immediately observe the event after appending it
+    observer.observe(eventDiv);
             });
 
             // Add slide-in animation using IntersectionObserver
@@ -192,7 +194,7 @@
                 }
             });
         },
-        { threshold: 0.01 }
+        { threshold: 0.1 }
     );
             
 document.querySelectorAll(".event").forEach((event) => {
