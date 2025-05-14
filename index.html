@@ -18,8 +18,8 @@
             width: 80%;
             margin: 50px auto;
             padding: 20px 0;
-            overflow-y: scroll; /* Ensure scrolling is allowed */
-            max-height: none;
+            max-height: 80vh; /* Set maximum height */
+    overflow-y: auto; /* Ensure scrolling */
         }
     
              
@@ -126,6 +126,10 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const timeline = document.querySelector(".timeline");
+            if (!timeline) {
+    console.error("Timeline container not found!");
+    return;
+}
             
             const events = [
                 { japanese: "嘉永2", western: "1849", description: "Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school" },
@@ -167,6 +171,18 @@
             // **Sort events by year**
             events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
+             // Add slide-in animation using IntersectionObserver
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
              // Render events dynamically
             events.forEach((event, index) => {
                 const eventDiv = document.createElement("div");
@@ -184,22 +200,7 @@
     observer.observe(eventDiv);
             });
 
-            // Add slide-in animation using IntersectionObserver
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    observer.unobserve(entry.target); // Stop observing once visible
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
             
-document.querySelectorAll(".event").forEach((event) => {
-        observer.observe(event);
-        });
         });
     </script>
 </body>
