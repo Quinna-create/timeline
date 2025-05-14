@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
         }
-
+       
         .timeline-container {
             position: relative;
             width: 80%;
@@ -98,24 +98,89 @@
     </style>
 </head>
 <body>
-    <div class="timeline-container">
-        <div class="vertical-line"></div>
-        <div class="clearfix">
-            <div class="event left">
-                <div class="event-content">
-                    <div class="japanese-date">嘉永2</div>
-                    <div class="western-year">1849</div>
-                    <div class="description">Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school.</div>
-                </div>
-            </div>
-            <div class="event right">
-                <div class="event-content">
-                    <div class="japanese-date">文久3</div>
-                    <div class="western-year">1863</div>
-                    <div class="description">Shinsengumi officially inaugurated.</div>
-                </div>
-            </div>
-            <div class="event left">
-                <div class="event-content">
-                    <div
-
+  <div class="timeline-container">
+        <div class="timeline"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const timeline = document.querySelector(".timeline");
+            
+            const events = [
+                { japanese: "嘉永2", western: "1849", description: "Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school" },
+                { japanese: "文久1", western: "1861", description: "Stuff happens on this day (Chapter 6)" },
+                { japanese: "文久2", western: "1862", description: "Hijikata Toshizō and everyone else joins Roshi Corps (Chapter 6)" },
+                { japanese: "文久3", western: "1863", description: "Kondō purchases the 'Kotetsu' sword (Chapter 6)" },
+                { japanese: "文久3", western: "1863", description: "Recruits from Edo meet each other at Dentsū temple (Chapter 2)" },
+                { japanese: "文久3", western: "1863", description: "Hijikata first suspects Okita has TB (Chapter 11)" },
+                { japanese: "文久3", western: "1863", description: "Shinsengumi officially inaugurated (Chapter 6)" },
+                { japanese: "文久3", western: "1863", description: "Assassination of Kiyokawa Hachirō" },
+                { japanese: "文久3", western: "1863", description: "Hamaguri Gate Incident (Chapter 8)" },
+                { japanese: "文久3", western: "1863", description: "Serizawa incident with sumo wrestlers (Chapter 2)" },
+                { japanese: "文久3", western: "1863", description: "Assassination of Serizawa (Chapter 2)" },
+                { japanese: "文久3", western: "1863", description: "Fukamachi Shinsaku’s first kill (Chapter 3)" },
+                { japanese: "文久3", western: "1863", description: "Takeda and Yamazaki Susumu join Shinsengumi (Chapters 4 and 5)" },
+                { japanese: "元治1", western: "1864", description: "Yamazaki reports Masuya to Shinsengumi; Fukamachi Shinsaku killed and discovery of note leading to Ikedaya raid (Chapter 3); Ikedaya Incident (Chapters 4 & 8); organizational structure redrawn—corporal becomes sergeant" },
+                { japanese: "元治1", western: "1864", description: "Choshu sympathizers forced out of Kyoto back to Choshu, overturning Choshu’s powerful position in the capital" },
+                { japanese: "元治1", western: "1864", description: "Chrysanthemum festival, Shinsaku meets at Shikokuya Inn (Chapter 3)" },
+                { japanese: "元治1", western: "1864", description: "Shinsaku kills for the first time in raid at Baishoin temple (Chapter 3)" },
+                { japanese: "慶応1", western: "1865", description: "Shinsengumi moves headquarters from Mibu to Nishi Honganji; Sosaburo and Tashiro join the corps (Chapter 7)" },
+                { japanese: "慶応1", western: "1865", description: "Yahei engages in personal fight, killing Sakura" },
+                { japanese: "慶応1", western: "1865", description: "Shikanai’s child born (Chapter 8)" },
+                { japanese: "慶応2", western: "1866", description: "Beginning of Chapter 8; Okubo and Ito secret meeting at Ichiriki cementing alliance before Ito’s departure from Shinsengumi" },
+                { japanese: "慶応2", western: "1866", description: "Middle of 1st month, Ohayashi Hyogo arrives at headquarters" },
+                { japanese: "慶応2", western: "1866", description: "Nakakura Shuzen discovered to have been attacked (Chapter 10)" },
+                { japanese: "慶応2", western: "1866", description: "Tainoshin agrees to leave Shinsengumi with the Ito faction (Chapter 1)" },
+                { japanese: "慶応2", western: "1866", description: "Tainoshin becomes involved in intra-party split (Chapter 1)" },
+                { japanese: "慶応2", western: "1866", description: "Tani Saju*rō is defeated in combat (Chapter 12)" },
+                { japanese: "慶応2", western: "1866", description: "Placard thrown into Kamo river with the notice board incident (Chapter 8)" },
+                { japanese: "慶応2", western: "1866", description: "Ito broaches idea of splitting from corps with Kondo (Chapter 13)" },
+                { japanese: "慶応2", western: "1866", description: "Takeda Kanryu*sai’s death (Chapter 5)" },
+                { japanese: "慶応2", western: "1866", description: "Hirano Kazumi attacks Tomiyama Yahei by Yugyo temple on Shichijo Avenue" },
+                { japanese: "慶応3", western: "1867", description: "Ito faction leaves for Choenji Temple (Chapter 1)" },
+                { japanese: "慶応3", western: "1867", description: "Ito faction (along with Tainoshin) moved to Gesshin-in Temple (Chapter 1)" },
+                { japanese: "慶応3", western: "1867", description: "Ito is assassinated at Aburanokoji (Chapter 1)" },
+                { japanese: "慶応4", western: "1868", description: "Battle of Toba-Fushimi, after which the Shinsengumi is driven out of Kyoto" }
+            ];
+
+            // **Sort events by year**
+            events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
+
+            // **Render events dynamically**
+            events.forEach(event => {
+                const eventDiv = document.createElement("div");
+                eventDiv.className = "event";
+                eventDiv.innerHTML = `
+                    <div class="japanese-date">${event.japanese}</div>
+                    <div class="western-year">${event.western}</div>
+                    <div class="description">${event.description}</div>
+                `;
+                timeline.appendChild(eventDiv);
+            });
+
+            // **Button-based scrolling**
+            leftButton.addEventListener("click", function () {
+                timeline.scrollLeft -= 300;
+            });
+
+            rightButton.addEventListener("click", function () {
+                timeline.scrollLeft += 300;
+            });
+
+            // **Hover effects fallback**
+            const eventElements = document.querySelectorAll(".event");
+            eventElements.forEach(event => {
+                event.addEventListener("mouseenter", function () {
+                    this.style.boxShadow = "0px 0px 10px rgba(255, 255, 255, 0.5)";
+                    this.style.transform = "scale(1.05)";
+                    this.style.transition = "0.3s ease-in-out";
+                });
+
+                event.addEventListener("mouseleave", function () {
+                    this.style.boxShadow = "none";
+                    this.style.transform = "scale(1)";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
