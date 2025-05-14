@@ -12,11 +12,13 @@
             color: white;
             margin: 0;
             padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
        
         .timeline-container {
             position: relative;
-            width: 80%;
+            width: 100%;
+            max-width: 100%; /* Prevent overflow */
             margin: 50px auto;
             padding: 20px 0;
             max-height: 80vh; /* Set maximum height */
@@ -41,7 +43,7 @@
     margin: 30px 0;
     width: 45%;
     opacity: 0; /* Initially hidden */
-    transform: translateX(3000px); /* Slide in from the right */
+    transform: translateX(0); /* Slide in from the right */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
 }
       
