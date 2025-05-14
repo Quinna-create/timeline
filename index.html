@@ -175,20 +175,18 @@
             // Sort events by year
     events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
-    // Add slide-in animation using IntersectionObserver
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible"); // Slide in when in view
-                } else {
-                    entry.target.classList.remove("visible"); // Slide out when out of view
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-
+               const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible"); // Slide in when entering view
+            } else {
+                entry.target.classList.remove("visible"); // Slide out when leaving view
+            }
+        });
+    },
+    { threshold: 0.1 } // Adjust for smoother effect
+);
     // Render events dynamically
     events.forEach((event, index) => {
         const eventDiv = document.createElement("div");
