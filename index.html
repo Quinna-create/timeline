@@ -18,8 +18,8 @@
             width: 80%;
             margin: 50px auto;
             padding: 20px 0;
-            overflow-y: auto;
-            max-height: 100vh; /* Allows scrolling within the viewport */
+            overflow-y: scroll; /* Ensure scrolling is allowed */
+            max-height: none;
         }
     
              
@@ -34,6 +34,7 @@
         }
 
         .event {
+    overflow: visible; /* Ensure event content is not clipped */
     position: relative;
     margin: 30px 0;
     width: 45%;
@@ -184,6 +185,7 @@
         (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
+                    console.log("Visible:", entry.target); // Debugging
                     entry.target.classList.add("visible");
                     observer.unobserve(entry.target); // Stop observing once visible
                 }
