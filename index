@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Shinsengumi Timeline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .timeline-container {
+            position: relative;
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px 0;
+        }
+
+        .vertical-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: white;
+            transform: translateX(-50%);
+        }
+
+        .event {
+            position: relative;
+            margin: 30px 0;
+            width: 45%;
+        }
+
+        .event.right {
+            float: right;
+            text-align: left;
+        }
+
+        .event.left {
+            float: left;
+            text-align: right;
+        }
+
+        .event-content {
+            padding: 10px;
+            background: #3a3a3a;
+            border-radius: 10px;
+            box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
+        }
+
+        .event::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .event.right::before {
+            left: -10px;
+        }
+
+        .event.left::before {
+            right: -10px;
+        }
+
+        .japanese-date {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .western-year {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .clearfix::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="vertical-line"></div>
+        <div class="clearfix">
+            <div class="event left">
+                <div class="event-content">
+                    <div class="japanese-date">嘉永2</div>
+                    <div class="western-year">1849</div>
+                    <div class="description">Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school.</div>
+                </div>
+            </div>
+            <div class="event right">
+                <div class="event-content">
+                    <div class="japanese-date">文久3</div>
+                    <div class="western-year">1863</div>
+                    <div class="description">Shinsengumi officially inaugurated.</div>
+                </div>
+            </div>
+            <div class="event left">
+                <div class="event-content">
+                    <div
+
