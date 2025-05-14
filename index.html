@@ -63,9 +63,16 @@
     transform: translateX(0); /* Slide into place */
 }
 
-        .event.hidden {
-    opacity: 0.3; /* Keep event semi-visible instead of fully disappearing */
-    transform: translateX(-50px); /* Slight shift when scrolling up */
+       .event.hidden {
+    opacity: 0;
+}
+
+.event.right.hidden {
+    transform: translateX(-50px); /* Slide left when leaving view */
+}
+
+.event.left.hidden {
+    transform: translateX(50px); /* Slide right when leaving view */
 }
         
         .event-content {
