@@ -33,15 +33,16 @@
             transform: translateX(-50%);
         }
 
-        .event {
+    .event {
     clear: both; /* Ensure no overlap between events */
     overflow: visible; /* Ensure event content is not clipped */
     position: relative;
     margin: 30px 0;
     width: 45%;
     opacity: 0; /* Initially hidden for animation */
+    transform: translateX(100%); /* Slide in from the right by default */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-            z-index: 10;
+    z-index: 10;
        }
 
         .event {
@@ -180,16 +181,18 @@
             events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
              // Add slide-in animation using IntersectionObserver
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    console.log(`Event became visible: ${entry.target.innerHTML}`); // Debugging
-                    observer.unobserve(entry.target); // Stop observing once visible
-                }
-            });
-        },
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible"); // Slide in when in view
+            } else {
+                entry.target.classList.remove("visible"); // Slide out when out of view
+            }
+        });
+    },
+    { threshold: 0.1 }
+);
         { threshold: 0.1 }
     );
              // Render events dynamically
