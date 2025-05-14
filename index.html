@@ -136,7 +136,12 @@
 <body>
   <div class="timeline-container">
     <div class="vertical-line"></div>
-    <div class="timeline"></div>
+      <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
+    <!-- Each event can be wrapped as a list item -->
+    <div class="event" role="listitem" aria-label="Event description">
+        ...
+    </div>
+</div>
 </div>
 
     <script>
