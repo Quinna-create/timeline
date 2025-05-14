@@ -187,7 +187,7 @@
     events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
              const observer = new IntersectionObserver(
-    (entries) => {
+    (entries, observer) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("visible");
@@ -198,9 +198,9 @@
             }
         });
     },
-    { threshold: 0.3 }
+    { rootMargin: "100px", threshold: 0.2 } // Adjust to catch elements earlier
 );
-    // Render events dynamically
+            //ents dynamically
     events.forEach((event, index) => {
         const eventDiv = document.createElement("div");
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
