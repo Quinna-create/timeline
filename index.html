@@ -42,8 +42,7 @@
     width: 45%;
     opacity: 0; /* Initially hidden */
     transform: translateX(100%); /* Slide in from the right */
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-    z-index: 10;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
       
         
@@ -180,19 +179,19 @@
             // Sort events by year
     events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
-               const observer = new IntersectionObserver(
+             const observer = new IntersectionObserver(
     (entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add("visible"); // Slide in when appearing
-                entry.target.classList.remove("hidden"); // Remove fade-out class
+                entry.target.classList.add("visible"); // Make event visible
+                entry.target.classList.remove("hidden"); // Remove fade-out effect
             } else {
-                entry.target.classList.add("hidden"); // Slightly fade out when scrolling up
+                entry.target.classList.add("hidden"); // Fade out when scrolling up
                 entry.target.classList.remove("visible"); // Remove slide-in effect
             }
         });
     },
-    { threshold: 0.2 } // Slightly higher threshold for smoother effect
+    { threshold: 0.3 } // Slightly higher threshold for better timing
 );
     // Render events dynamically
     events.forEach((event, index) => {
