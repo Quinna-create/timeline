@@ -41,7 +41,7 @@
     margin: 30px 0;
     width: 45%;
     opacity: 0; /* Initially hidden */
-    transform: translateX(100px); /* Slide in from the right */
+    transform: translateX(150px); /* Slide in from the right */
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
       
@@ -49,13 +49,13 @@
         .event.right {
     float: right;
     text-align: left;
-    transform: translateX(100px); /* Slide in from the right */
+    transform: translateX(150px); /* Slide in from the right */
        }
 
        .event.left {
     float: left;
     text-align: right;
-    transform: translateX(-100px); /* Slide in from the left */
+    transform: translateX(-150px); /* Slide in from the left */
 }
 
         .event.visible {
@@ -63,17 +63,17 @@
     transform: translateX(0); /* Slide into place */
 }
 
-       .event.hidden {
+     .event.hidden {
     opacity: 0;
-    transform: translateX(50px); /* Slight movement when scrolling up */
+    transform: translateX(100px); /* Moves events off-screen when scrolling up */
 }
 
 .event.right.hidden {
-    transform: translateX(-50px); /* Slide left when leaving view */
+    transform: translateX(-100px); /* Moves right-side events back out */
 }
 
 .event.left.hidden {
-    transform: translateX(50px); /* Slide right when leaving view */
+    transform: translateX(100px); /* Moves left-side events back out */
 }
         
         .event-content {
@@ -97,7 +97,7 @@
             height: 20px;
             background-color: white;
             border-radius: 50%;
-            transform: translateY(-50%);
+            transform: translateY(150px);
             z-index: 10;
         }
 
@@ -199,7 +199,7 @@
             }
         });
     },
-    { rootMargin: "200px", threshold: 0.1 } // Detect earlier for better sliding behavior
+    { rootMargin: "300px", threshold: 0.2 } // Wider margin ensures smoother triggering
 );
             //ents dynamically
     events.forEach((event, index) => {
