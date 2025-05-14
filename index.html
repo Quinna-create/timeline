@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vertical Shinsengumi Timeline</title>
+    <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,23 +35,18 @@
         }
 
     .event {
-    clear: both; /* Ensure no overlap between events */
-    overflow: visible; /* Ensure event content is not clipped */
+    clear: both;
+    overflow: visible;
     position: relative;
     margin: 30px 0;
     width: 45%;
-    opacity: 0; /* Initially hidden for animation */
-    transform: translateX(100%); /* Slide in from the right by default */
+    opacity: 0; /* Initially hidden */
+    transform: translateX(100%); /* Slide in from the right */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     z-index: 10;
        }
 
-        .event {
-    opacity: 1 !important;
-    transform: none !important;
-    position: relative !important;
-    z-index: 10 !important;
-}
+      
         
         .event.right {
     float: right;
@@ -58,16 +54,16 @@
     transform: translateX(100%); /* Slide in from the right */
        }
 
-        .event.left {
+       .event.left {
     float: left;
     text-align: right;
     transform: translateX(-100%); /* Slide in from the left */
 }
 
         .event.visible {
-    opacity: 1;
-    transform: translateX(0); /* Slide into view */
-    }
+    opacity: 1; /* Make visible */
+    transform: translateX(0); /* Slide into place */
+}
         
         .event-content {
     padding: 10px;
