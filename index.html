@@ -177,46 +177,40 @@
                 { japanese: "慶応4", western: "1868", description: "Battle of Toba-Fushimi, after which the Shinsengumi is driven out of Kyoto" }
             ];
 
-            // **Sort events by year**
-            events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
+            // Sort events by year
+    events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
-             // Add slide-in animation using IntersectionObserver
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible"); // Slide in when in view
-            } else {
-                entry.target.classList.remove("visible"); // Slide out when out of view
-            }
-        });
-    },
-    { threshold: 0.1 }
-);
+    // Add slide-in animation using IntersectionObserver
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible"); // Slide in when in view
+                } else {
+                    entry.target.classList.remove("visible"); // Slide out when out of view
+                }
+            });
+        },
         { threshold: 0.1 }
     );
-             // Render events dynamically
-            events.forEach((event, index) => {
-                const eventDiv = document.createElement("div");
-                eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
-                eventDiv.innerHTML = `
-                    <div class="event-content">
-                        <div class="japanese-date">${event.japanese}</div>
-                        <div class="western-year">${event.western}</div>
-                        <div class="description">${event.description}</div>
-                    </div>
-                `;
-                timeline.appendChild(eventDiv);
 
-                console.log(`Event added: ${event.japanese} - ${event.western}`); // Debugging
-    observer.observe(eventDiv);
-                
-                // Immediately observe the event after appending it
-    observer.observe(eventDiv);
-            });
+    // Render events dynamically
+    events.forEach((event, index) => {
+        const eventDiv = document.createElement("div");
+        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
+        eventDiv.innerHTML = `
+            <div class="event-content">
+                <div class="japanese-date">${event.japanese}</div>
+                <div class="western-year">${event.western}</div>
+                <div class="description">${event.description}</div>
+            </div>
+        `;
+        timeline.appendChild(eventDiv);
 
-            
-        });
+        // Observe the event for animations
+        observer.observe(eventDiv);
+    });
+});
     </script>
 </body>
 </html>
