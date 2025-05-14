@@ -41,6 +41,7 @@
     width: 45%;
     opacity: 0; /* Initially hidden for animation */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+            z-index: 10;
        }
 
         .event.right {
@@ -177,6 +178,7 @@
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("visible");
+                    console.log(`Event became visible: ${entry.target.innerHTML}`); // Debugging
                     observer.unobserve(entry.target); // Stop observing once visible
                 }
             });
@@ -196,6 +198,9 @@
                 `;
                 timeline.appendChild(eventDiv);
 
+                console.log(`Event added: ${event.japanese} - ${event.western}`); // Debugging
+    observer.observe(eventDiv);
+                
                 // Immediately observe the event after appending it
     observer.observe(eventDiv);
             });
