@@ -136,31 +136,24 @@
     </style>
 </head>
 <body>
-    <div class="timeline-container">
-        <div class="vertical-line"></div>
-        <div class="timeline"></div>
+  <div class="timeline-container">
+    <div class="vertical-line"></div>
+      <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
+    <!-- Each event can be wrapped as a list item -->
+    <div class="event" role="listitem" aria-label="Event description">
+        ...
     </div>
+</div>
+</div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-           const timelineContainer = document.querySelector(".timeline-container");
-            const verticalLine = document.querySelector(".vertical-line");
             const timeline = document.querySelector(".timeline");
             if (!timeline) {
     console.error("Timeline container not found!");
     return;
 }
-           
-    
-    // Function to adjust the height of the vertical line
-    function adjustVerticalLineHeight() {
-        if (timelineContainer && verticalLine) {
-            // Set the vertical line's height to the full scrollable height of the timeline container
-            verticalLine.style.height = `${timelineContainer.scrollHeight}px`;
-        }
-    }
-
-             
+            
             const events = [
                 { japanese: "嘉永2", western: "1849", description: "Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school" },
                 { japanese: "文久1", western: "1861", description: "Stuff happens on this day (Chapter 6)" },
