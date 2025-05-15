@@ -136,28 +136,22 @@
     </style>
 </head>
 <body>
-  <div class="timeline-container">
-    <div class="vertical-line"></div>
-      <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
-    <!-- Each event can be wrapped as a list item -->
-    <div class="event" role="listitem" aria-label="Event description">
-        ...
+    <div class="timeline-container">
+        <div class="vertical-line"></div>
+        <div class="timeline"></div>
     </div>
-</div>
-</div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+           const timelineContainer = document.querySelector(".timeline-container");
+            const verticalLine = document.querySelector(".vertical-line");
             const timeline = document.querySelector(".timeline");
             if (!timeline) {
     console.error("Timeline container not found!");
     return;
 }
-
-            // Paste my updated code here
-    const timelineContainer = document.querySelector(".timeline-container");
-    const verticalLine = document.querySelector(".vertical-line");
-
+           
+    
     // Function to adjust the height of the vertical line
     function adjustVerticalLineHeight() {
         if (timelineContainer && verticalLine) {
@@ -166,14 +160,7 @@
         }
     }
 
-    // Adjust the line height when the page loads
-    adjustVerticalLineHeight();
-
-    // Adjust the line height if the window is resized
-    window.addEventListener("resize", adjustVerticalLineHeight);
- });
-</script>
-            
+             
             const events = [
                 { japanese: "嘉永2", western: "1849", description: "Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school" },
                 { japanese: "文久1", western: "1861", description: "Stuff happens on this day (Chapter 6)" },
