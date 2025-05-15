@@ -43,7 +43,7 @@
     margin: 30px 0;
     width: 45%;
     opacity: 0; /* Initially hidden */
-    transform: translateX(0); /* Slide in from the right */
+    transform: translateX(400); /* Slide in from the right */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
 }
       
@@ -51,13 +51,13 @@
         .event.right {
     float: right;
     text-align: left;
-    transform: translateX(300px); /* Slide in from the right */
+    transform: translateX(400px); /* Slide in from the right */
        }
 
        .event.left {
     float: left;
     text-align: right;
-    transform: translateX(-300px); /* Slide in from the left */
+    transform: translateX(-400px); /* Slide in from the left */
 }
 
         .event.visible {
@@ -67,15 +67,15 @@
 
      .event.hidden {
     opacity: 0;
-    transform: translateX(200px); /* Moves events off-screen when scrolling up */
+    transform: translateX(500px); /* Moves events off-screen when scrolling up */
 }
 
 .event.right.hidden {
-    transform: translateX(-200px); /* Moves right-side events back out */
+    transform: translateX(-500px); /* Moves right-side events back out */
 }
 
 .event.left.hidden {
-    transform: translateX(200px); /* Moves left-side events back out */
+    transform: translateX(500px); /* Moves left-side events back out */
 }
         
         .event-content {
@@ -206,7 +206,7 @@
             }
         });
     },
-    { rootMargin: "300px", threshold: 0.2 } // Wider margin ensures smoother triggering
+    { rootMargin: "500px", threshold: 0.2 } // Wider margin ensures smoother triggering
 );
             //ents dynamically
     events.forEach((event, index) => {
