@@ -206,14 +206,17 @@
             }
         });
     },
-    { rootMargin: "500px", threshold: 0.2 } // Wider margin ensures smoother triggering
+    { rootMargin: "300px", threshold: 0.15 } // Wider margin ensures smoother triggering
 );
             //ents dynamically
     events.forEach((event, index) => {
         const eventDiv = document.createElement("div");
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
+       eventDiv.style.opacity = "0";
+        eventDiv.style.transform = index % 2 === 0 ? "translateX(-400px)" : "translateX(400px)";
+
         eventDiv.innerHTML = `
-            <div class="event-content">
+                       <div class="event-content">
                 <div class="japanese-date">${event.japanese}</div>
                 <div class="western-year">${event.western}</div>
                 <div class="description">${event.description}</div>
