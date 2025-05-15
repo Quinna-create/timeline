@@ -199,10 +199,13 @@
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("visible");
-                entry.target.classList.remove("hidden");
+                entry.target.style.opacity = "1"; // Ensure visibility
+                entry.target.style.transform = "translateX(0)";
             } else {
-                entry.target.classList.add("hidden");
                 entry.target.classList.remove("visible");
+                entry.target.style.opacity = "0"; // Hide when scrolling up
+                entry.target.style.transform = 
+                    entry.target.classList.contains("left") ? "translateX(-400px)" : "translateX(400px)";
             }
         });
     },
