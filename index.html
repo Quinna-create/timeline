@@ -153,6 +153,25 @@
     console.error("Timeline container not found!");
     return;
 }
+
+            // Paste my updated code here
+    const timelineContainer = document.querySelector(".timeline-container");
+    const verticalLine = document.querySelector(".vertical-line");
+
+    // Function to adjust the height of the vertical line
+    function adjustVerticalLineHeight() {
+        if (timelineContainer && verticalLine) {
+            // Set the vertical line's height to the full scrollable height of the timeline container
+            verticalLine.style.height = `${timelineContainer.scrollHeight}px`;
+        }
+    }
+
+    // Adjust the line height when the page loads
+    adjustVerticalLineHeight();
+
+    // Adjust the line height if the window is resized
+    window.addEventListener("resize", adjustVerticalLineHeight);
+
             
             const events = [
                 { japanese: "嘉永2", western: "1849", description: "Kondō Isami (16 years old) adopted by Shūsuke as heir to the Tennen Rishin sword fighting school" },
