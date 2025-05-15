@@ -30,10 +30,10 @@
             position: absolute;
             left: 50%;
             top: 0;
+            bottom: 0;
             width: 2px;
             background-color: white;
             transform: translateX(-50%);
-            height: 100%;
         }
 
     .event {
@@ -135,41 +135,23 @@
         }
     </style>
 </head>
-  <body>
+<body>
   <div class="timeline-container">
     <div class="vertical-line"></div>
-    <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
-      <!-- Example event -->
-      <div class="event" role="listitem" aria-label="Event description">
-        <div class="event-content">
-          <div class="japanese-date">文久3</div>
-          <div class="western-year">1863</div>
-          <div class="description">Shinsengumi officially inaugurated</div>
-        </div>
-      </div>
+      <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
+    <!-- Each event can be wrapped as a list item -->
+    <div class="event" role="listitem" aria-label="Event description">
+        ...
     </div>
-  </div>
+</div>
+</div>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-      const timelineContainer = document.querySelector(".timeline-container");
-      const verticalLine = document.querySelector(".vertical-line");
-      const timeline = document.querySelector(".timeline");
-
-       }
-      // Function to adjust the height of the vertical line dynamically
-      function adjustLineHeight() {
-        if (timelineContainer && verticalLine) {
-          verticalLine.style.height = `${timelineContainer.scrollHeight}px`;
-        }
-      }
-
-      // Adjust the line height on initial load
-      adjustLineHeight();
-
-      // Optional: Adjust the line height on window resize
-      window.addEventListener("resize", adjustLineHeight);
-
+        document.addEventListener("DOMContentLoaded", function () {
+            const timeline = document.querySelector(".timeline");
+            if (!timeline) {
+    console.error("Timeline container not found!");
+    return;
 }
             
             const events = [
