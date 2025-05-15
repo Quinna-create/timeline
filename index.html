@@ -194,32 +194,28 @@
             // Sort events by year
     events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
 
-             const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                entry.target.style.opacity = "1"; // Ensure visibility
-                entry.target.style.transform = "translateX(0)";
-            } else {
-                entry.target.classList.remove("visible");
-                entry.target.style.opacity = "0"; // Hide when scrolling up
-                entry.target.style.transform = 
-                    entry.target.classList.contains("left") ? "translateX(-400px)" : "translateX(400px)";
-            }
-        });
-    },
-    { rootMargin: "300px", threshold: 0.15 } // Wider margin ensures smoother triggering
-);
-            //ents dynamically
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    entry.target.classList.remove("hidden");
+                } else {
+                    entry.target.classList.add("hidden");
+                    entry.target.classList.remove("visible");
+                }
+            });
+        },
+        { rootMargin: "300px", threshold: 0.05 } // Adjust threshold for smoother triggering
+    );
+
+    // Add events dynamically
     events.forEach((event, index) => {
         const eventDiv = document.createElement("div");
-        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"}`; // Alternate left and right
-       eventDiv.style.opacity = "0";
-        eventDiv.style.transform = index % 2 === 0 ? "translateX(-400px)" : "translateX(400px)";
+        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`; // Add hidden class initially
 
         eventDiv.innerHTML = `
-                       <div class="event-content">
+            <div class="event-content">
                 <div class="japanese-date">${event.japanese}</div>
                 <div class="western-year">${event.western}</div>
                 <div class="description">${event.description}</div>
