@@ -92,16 +92,29 @@
     transform: scale(1.05);
         }
         
-    .timeline-container .event::before {
+   .event.left::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 100%;
   width: 18px;
   height: 18px;
   background-color: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
+  z-index: 2;
+  border: 3px solid #00bfff;
+}
+.event.right::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(50%, -50%);
   z-index: 2;
   border: 3px solid #00bfff;
 }
