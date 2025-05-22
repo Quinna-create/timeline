@@ -138,8 +138,10 @@
     </style>
 </head>
 <body>
+  <div class="vertical-line"></div>
   <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
 </div>
+</body>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -486,6 +488,17 @@
         observer.observe(eventDiv);
     });
 });
+        function adjustVerticalLineHeight() {
+    const timeline = document.querySelector('.timeline');
+    const verticalLine = document.querySelector('.vertical-line');
+    if (timeline && verticalLine) {
+        verticalLine.style.height = timeline.scrollHeight + 'px';
+    }
+}
+
+// Call after events are rendered
+adjustVerticalLineHeight();
+window.addEventListener('resize', adjustVerticalLineHeight);
     </script>
 </body>
 </html>
