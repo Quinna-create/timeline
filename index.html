@@ -12,119 +12,112 @@
             color: white;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-x: hidden;
         }
-       
         .timeline-container {
             position: relative;
             width: 100%;
-            max-width: 100%; /* Prevent overflow */
+            max-width: 100%;
             margin: 50px auto;
             padding: 20px 0;
-           
         }
-    
-             
         .vertical-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: white;
-    transform: translateX(-50%);
-    height: auto; /* Let top/bottom set the height */
-    z-index: 1;
-}
-
-        .dot {
-  position: absolute;
-  left: 50%;
-  width: 18px;
-  height: 18px;
-  background: white;
-  border-radius: 50%;
-  border: 3px solid #00bfff;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.timeline .dot {
-  /* We'll set top dynamically for each dot */
-}
-    .event {
-    clear: both;
-    overflow: visible;
-    position: relative;
-    margin: 30px 0;
-    width: calc(50% - 160px); /* Subtract margin from width! */
-    opacity: 0; /* Initially hidden */
-    transform: translateX(400px); /* Slide in from the right */
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-}
-      
-        
-       .event.left {
-    float: left;
-    text-align: right;
-    margin-right: 160px;
-}
-
-.event.right {
-    float: right;
-    text-align: left;
-    margin-left: 160px;
-}
-
-        .event.visible {
-    opacity: 1; /* Make visible */
-    transform: translateX(0); /* Slide into place */
-}
-
-     .event.hidden {
-    opacity: 0;
-    transform: translateX(500px); /* Moves events off-screen when scrolling up */
-}
-
-.event.right.hidden {
-    transform: translateX(-500px); /* Moves right-side events back out */
-}
-
-.event.left.hidden {
-    transform: translateX(500px); /* Moves left-side events back out */
-}
-        
-        .event-content {
-    padding: 10px;
-    background: #3a3a3a;
-    border-radius: 10px;
-    box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
- }
-
-        .event:hover .event-content {
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
-    transform: scale(1.05);
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: white;
+            transform: translateX(-50%);
+            height: auto;
+            z-index: 1;
         }
-        
-  
+        .dot {
+            position: absolute;
+            left: 50%;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            border: 3px solid #00bfff;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        .year-label {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #222;
+            color: #fff;
+            border-radius: 30px;
+            padding: 8px 32px;
+            font-size: 24px;
+            font-weight: bold;
+            border: 2px solid #00bfff;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        .timeline .dot { }
+        .event {
+            clear: both;
+            overflow: visible;
+            position: relative;
+            margin: 30px 0;
+            width: calc(50% - 160px);
+            opacity: 0;
+            transform: translateX(400px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .event.left {
+            float: left;
+            text-align: right;
+            margin-right: 160px;
+        }
+        .event.right {
+            float: right;
+            text-align: left;
+            margin-left: 160px;
+        }
+        .event.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .event.hidden {
+            opacity: 0;
+            transform: translateX(500px);
+        }
+        .event.right.hidden {
+            transform: translateX(-500px);
+        }
+        .event.left.hidden {
+            transform: translateX(500px);
+        }
+        .event-content {
+            padding: 10px;
+            background: #3a3a3a;
+            border-radius: 10px;
+            box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .event:hover .event-content {
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
         .japanese-date {
             font-size: 24px;
             font-weight: bold;
             color: #d32f2f;
         }
-
         .western-year {
             font-size: 14px;
             color: #555;
             margin-bottom: 10px;
         }
-
         .description {
             font-size: 16px;
             line-height: 1.6;
         }
-
         .clearfix::after {
             content: '';
             display: table;
@@ -134,20 +127,13 @@
 </head>
 <body>
    <div class="timeline-container">
-  <div class="vertical-line"></div>
-  <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
-</div>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const timeline = document.querySelector(".timeline");
-            if (!timeline) {
-    console.error("Timeline container not found!");
-    return;
-}
-            
-            const events = [
+      <div class="vertical-line"></div>
+      <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
+   </div>
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const timeline = document.querySelector(".timeline");
+    const events = [
   {
     year: 1849,
     japaneseKanji: "嘉永2年",
@@ -444,12 +430,12 @@
   }
 ];
 
-            // Sort events by year
+          // Sort events by year, month, day
     events.sort((a, b) => {
-  if (a.year !== b.year) return a.year - b.year;
-  if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
-  return (a.day || 0) - (b.day || 0);
-});
+        if (a.year !== b.year) return a.year - b.year;
+        if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+        return (a.day || 0) - (b.day || 0);
+    });
 
     const observer = new IntersectionObserver(
         (entries) => {
@@ -466,48 +452,73 @@
         { rootMargin: "300px", threshold: 0.05 }
     );
 
-    // Add events dynamically
+    let lastYear = null;
     const eventDivs = [];
-const dots = [];
+    const dots = [];
+    const yearLabels = [];
 
-events.forEach((event, index) => {
-    const eventDiv = document.createElement("div");
-    eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
+    events.forEach((event, index) => {
+        // Insert year label if it's a new year
+        if (event.year !== lastYear) {
+            const yearDiv = document.createElement("div");
+            yearDiv.className = "year-label";
+            yearDiv.textContent = event.year;
+            timeline.appendChild(yearDiv);
+            yearLabels.push(yearDiv);
+            lastYear = event.year;
+        }
 
-    eventDiv.innerHTML = `
-        <div class="event-content">
-            <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
-            <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
-            <div class="description">${event.description}</div>
-        </div>
-    `;
-    timeline.appendChild(eventDiv);
-    observer.observe(eventDiv);
+        const eventDiv = document.createElement("div");
+        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
 
-    // Create and store the dot and eventDiv for later positioning
-    const dot = document.createElement("div");
-    dot.className = "dot";
-    timeline.appendChild(dot);
-    eventDivs.push(eventDiv);
-    dots.push(dot);
-});
+        eventDiv.innerHTML = `
+            <div class="event-content">
+                <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
+                <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
+                <div class="description">${event.description}</div>
+            </div>
+        `;
+        timeline.appendChild(eventDiv);
+        observer.observe(eventDiv);
 
-// Function to position dots
-function positionDots() {
-    eventDivs.forEach((eventDiv, i) => {
-        dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        timeline.appendChild(dot);
+        eventDivs.push(eventDiv);
+        dots.push(dot);
     });
-}
 
-// Initial position
-setTimeout(positionDots, 0);
-// Update positions on resize or font load
-window.addEventListener('resize', positionDots);
-window.addEventListener('load', positionDots);
+    // Position dots and year labels
+    function positionAll() {
+        // Dots
+        eventDivs.forEach((eventDiv, i) => {
+            dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
+        });
+        // Year labels
+        let eventIdx = 0;
+        yearLabels.forEach((yearDiv, i) => {
+            // Find the first event after this year label
+            let found = false;
+            for (; eventIdx < eventDivs.length; eventIdx++) {
+                if (eventDivs[eventIdx].previousSibling === yearDiv) {
+                    // Place label above this event
+                    yearDiv.style.top = (eventDivs[eventIdx].offsetTop - 30) + "px";
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && eventDivs[i]) {
+                yearDiv.style.top = (eventDivs[i].offsetTop - 30) + "px";
+            }
+        });
+    }
+
+    setTimeout(positionAll, 0);
+    window.addEventListener('resize', positionAll);
+    window.addEventListener('load', positionAll);
 
     // Adjust vertical line height
     function adjustVerticalLineHeight() {
-        const timeline = document.querySelector('.timeline');
         const verticalLine = document.querySelector('.vertical-line');
         if (timeline && verticalLine) {
             verticalLine.style.height = timeline.scrollHeight + 'px';
@@ -516,6 +527,6 @@ window.addEventListener('load', positionDots);
     adjustVerticalLineHeight();
     window.addEventListener('resize', adjustVerticalLineHeight);
 });
-    </script>
+   </script>
 </body>
 </html>
