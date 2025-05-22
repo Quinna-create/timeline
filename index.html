@@ -37,6 +37,21 @@
     z-index: 1;
 }
 
+        .dot {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  border: 3px solid #00bfff;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.timeline .dot {
+  /* We'll set top dynamically for each dot */
+}
     .event {
     clear: both;
     overflow: visible;
@@ -92,34 +107,7 @@
     transform: scale(1.05);
         }
         
-   .event.left::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  width: 18px;
-  height: 18px;
-  background-color: white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  border: 3px solid #00bfff;
-}
-.event.right::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  width: 18px;
-  height: 18px;
-  background-color: white;
-  border-radius: 50%;
-  transform: translate(50%, -50%);
-  z-index: 2;
-  border: 3px solid #00bfff;
-}
-
-
+  
         .japanese-date {
             font-size: 24px;
             font-weight: bold;
@@ -479,20 +467,43 @@
     );
 
     // Add events dynamically
-    events.forEach((event, index) => {
-        const eventDiv = document.createElement("div");
-        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
+    const eventDivs = [];
+const dots = [];
 
-        eventDiv.innerHTML = `
-            <div class="event-content">
-                <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
-                <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
-                <div class="description">${event.description}</div>
-            </div>
-        `;
-        timeline.appendChild(eventDiv);
-        observer.observe(eventDiv);
+events.forEach((event, index) => {
+    const eventDiv = document.createElement("div");
+    eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
+
+    eventDiv.innerHTML = `
+        <div class="event-content">
+            <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
+            <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
+            <div class="description">${event.description}</div>
+        </div>
+    `;
+    timeline.appendChild(eventDiv);
+    observer.observe(eventDiv);
+
+    // Create and store the dot and eventDiv for later positioning
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    timeline.appendChild(dot);
+    eventDivs.push(eventDiv);
+    dots.push(dot);
+});
+
+// Function to position dots
+function positionDots() {
+    eventDivs.forEach((eventDiv, i) => {
+        dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
     });
+}
+
+// Initial position
+setTimeout(positionDots, 0);
+// Update positions on resize or font load
+window.addEventListener('resize', positionDots);
+window.addEventListener('load', positionDots);
 
     // Adjust vertical line height
     function adjustVerticalLineHeight() {
