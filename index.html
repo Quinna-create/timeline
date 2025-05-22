@@ -138,9 +138,9 @@
     </style>
 </head>
 <body>
-    <div class="timeline-container">
+   <div class="timeline-container">
   <div class="vertical-line"></div>
-  <div class="timeline" role="list" aria-label="Shinsengumi Timeline">
+  <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
 </div>
 
 
@@ -489,17 +489,19 @@
         observer.observe(eventDiv);
     });
 });
-        function adjustVerticalLineHeight() {
-    const timeline = document.querySelector('.timeline');
-    const verticalLine = document.querySelector('.vertical-line');
-    if (timeline && verticalLine) {
-        verticalLine.style.height = timeline.scrollHeight + 'px';
-    }
-}
+        document.addEventListener("DOMContentLoaded", function () {
+    // ... your existing code to build events ...
 
-// Call after events are rendered
-adjustVerticalLineHeight();
-window.addEventListener('resize', adjustVerticalLineHeight);
+    function adjustVerticalLineHeight() {
+        const timeline = document.querySelector('.timeline');
+        const verticalLine = document.querySelector('.vertical-line');
+        if (timeline && verticalLine) {
+            verticalLine.style.height = timeline.scrollHeight + 'px';
+        }
+    }
+    adjustVerticalLineHeight();
+    window.addEventListener('resize', adjustVerticalLineHeight);
+});
     </script>
 </body>
 </html>
