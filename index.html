@@ -92,24 +92,20 @@
     transform: scale(1.05);
         }
         
-       .event::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
+    .event::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+        border: 3px solid #222; /* Add the border here */
 }
-.event.left::before {
-    left: 100%;
-}
-.event.right::before {
-    left: 0;
-}
+
         .japanese-date {
             font-size: 24px;
             font-weight: bold;
@@ -465,30 +461,26 @@
                 }
             });
         },
-        { rootMargin: "300px", threshold: 0.05 } // Adjust threshold for smoother triggering
+        { rootMargin: "300px", threshold: 0.05 }
     );
 
     // Add events dynamically
     events.forEach((event, index) => {
         const eventDiv = document.createElement("div");
-        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`; // Add hidden class initially
+        eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
 
         eventDiv.innerHTML = `
-    <div class="event-content">
-        <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
-        <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
-        <div class="description">${event.description}</div>
-    </div>
-`;
+            <div class="event-content">
+                <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
+                <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
+                <div class="description">${event.description}</div>
+            </div>
+        `;
         timeline.appendChild(eventDiv);
-
-        // Observe the event for animations
         observer.observe(eventDiv);
     });
-});
-        document.addEventListener("DOMContentLoaded", function () {
-    // ... your existing code to build events ...
 
+    // Adjust vertical line height
     function adjustVerticalLineHeight() {
         const timeline = document.querySelector('.timeline');
         const verticalLine = document.querySelector('.vertical-line');
