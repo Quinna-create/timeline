@@ -92,26 +92,24 @@
     transform: scale(1.05);
         }
         
-        .event::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border-radius: 50%;
-            transform: translateY(150px);
-            z-index: 10;
-        }
-
-      .event.right::before {
-    left: -10px; /* Connector to the vertical line */
+       .event::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
-      
-    .event.left::before {
-    right: -10px; /* Connector to the vertical line */
+.event.left::before {
+    left: 100%;
 }
-
+.event.right::before {
+    left: 0;
+}
         .japanese-date {
             font-size: 24px;
             font-weight: bold;
