@@ -49,18 +49,16 @@
 }
       
         
-        .event.right {
-    float: right;
-    text-align: left;
-            margin-left: 60px;
-    transform: translateX(400px); /* Slide in from the right */
-       }
-
        .event.left {
     float: left;
     text-align: right;
-           margin-right: 60px;
-    transform: translateX(-400px); /* Slide in from the left */
+    margin-right: 60px;
+}
+
+.event.right {
+    float: right;
+    text-align: left;
+    margin-left: 60px;
 }
 
         .event.visible {
@@ -94,24 +92,20 @@
     transform: scale(1.05);
         }
         
-    .event::before {
+    .timeline-container .event::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: 100vw; /* This will be overridden below */
+  left: 50%;
   width: 18px;
   height: 18px;
   background-color: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  border: 3px solid #00bfff; /* Deep Sky Blue */
+  border: 3px solid #00bfff;
 }
 
-/* NEW: Always put the dot at 50% of the container width */
-.timeline-container .event::before {
-  left: 50%;
-}
 
         .japanese-date {
             font-size: 24px;
