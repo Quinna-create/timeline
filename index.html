@@ -452,7 +452,11 @@
 ];
 
             // Sort events by year
-    events.sort((a, b) => parseInt(a.western) - parseInt(b.western));
+    events.sort((a, b) => {
+  if (a.year !== b.year) return a.year - b.year;
+  if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+  return (a.day || 0) - (b.day || 0);
+});
 
     const observer = new IntersectionObserver(
         (entries) => {
@@ -475,12 +479,12 @@
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`; // Add hidden class initially
 
         eventDiv.innerHTML = `
-            <div class="event-content">
-                <div class="japanese-date">${event.japanese}</div>
-                <div class="western-year">${event.western}</div>
-                <div class="description">${event.description}</div>
-            </div>
-        `;
+    <div class="event-content">
+        <div class="japanese-date">${event.japaneseKanji} <span style="font-size:14px; color:#fff;">(${event.japaneseRomaji})</span></div>
+        <div class="western-year">${event.year}${event.month ? '/' + event.month : ''}${event.day ? '/' + event.day : ''}</div>
+        <div class="description">${event.description}</div>
+    </div>
+`;
         timeline.appendChild(eventDiv);
 
         // Observe the event for animations
