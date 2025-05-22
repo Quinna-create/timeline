@@ -57,7 +57,7 @@
     overflow: visible;
     position: relative;
     margin: 30px 0;
-    width: 50%;
+    width: calc(50% - 160px); /* Subtract margin from width! */
     opacity: 0; /* Initially hidden */
     transform: translateX(400px); /* Slide in from the right */
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
