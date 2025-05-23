@@ -67,6 +67,19 @@
     font-family: 'Noto Sans JP', 'Roboto', Arial, sans-serif;
     
 }
+
+        .year-spacer {
+    width: 100%;
+    height: 80px; /* Adjust for more/less buffer around the year oval */
+    position: relative;
+    /* Optional: add some visual cue if you want */
+}
+.year-label {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*... your existing styles ... */
+}
 .kanji-year {
     font-family: 'Noto Serif JP', serif;
     font-weight: bold;
@@ -459,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 ];
 
-          // Sort events by year, month, day
+         // Sort events by year, month, day
     events.sort((a, b) => {
         if (a.year !== b.year) return a.year - b.year;
         if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
@@ -485,100 +498,100 @@ document.addEventListener("DOMContentLoaded", function () {
     const eventDivs = [];
     const dots = [];
     const yearLabels = [];
+    const spacers = [];
 
-       function getLunarDateString(event) {
-    const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
-    const monthStr = event.month ? `the ${event.month}${getOrdinalSuffix(event.month)} lunar month` : '';
-    if (event.day && event.month) {
-        return `${dayStr} of ${monthStr}`;
-    } else if (event.day) {
-        return dayStr;
-    } else if (event.month) {
-        return monthStr;
-    } else {
-        return ''; // No date
+    function getLunarDateString(event) {
+        const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
+        const monthStr = event.month ? `the ${event.month}${getOrdinalSuffix(event.month)} lunar month` : '';
+        if (event.day && event.month) {
+            return `${dayStr} of ${monthStr}`;
+        } else if (event.day) {
+            return dayStr;
+        } else if (event.month) {
+            return monthStr;
+        } else {
+            return '';
+        }
     }
-}
 
-function getOrdinalSuffix(n) {
-    if (n > 10 && n < 20) return 'th';
-    switch (n % 10) {
-        case 1:  return 'st';
-        case 2:  return 'nd';
-        case 3:  return 'rd';
-        default: return 'th';
+    function getOrdinalSuffix(n) {
+        if (n > 10 && n < 20) return 'th';
+        switch (n % 10) {
+            case 1:  return 'st';
+            case 2:  return 'nd';
+            case 3:  return 'rd';
+            default: return 'th';
+        }
     }
-}
+
+    // --- MAIN RENDERING LOOP ---
     events.forEach((event, index) => {
-        // Insert year label if it's a new year
+        // When a new year starts, insert a spacer and a year-label
         if (event.year !== lastYear) {
+            // Spacer (for vertical gap)
+            const spacer = document.createElement("div");
+            spacer.className = "year-spacer";
+            timeline.appendChild(spacer);
+            spacers.push(spacer);
+
+            // Year label (oval)
             const yearDiv = document.createElement("div");
             yearDiv.className = "year-label";
             yearDiv.innerHTML = `
-  <div class="kanji-year">${event.japaneseKanji}</div>
-  <div class="romaji-year">${event.japaneseRomaji}</div>
-  <div class="western-year-label">${event.year}</div>
-`;
+                <div class="kanji-year">${event.japaneseKanji}</div>
+                <div class="romaji-year">${event.japaneseRomaji}</div>
+                <div class="western-year-label">${event.year}</div>
+            `;
             timeline.appendChild(yearDiv);
             yearLabels.push(yearDiv);
+
             lastYear = event.year;
         }
 
+        // Event div
         const eventDiv = document.createElement("div");
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
 
-             const lunarDate = getLunarDateString(event);
-            eventDiv.innerHTML = `
-              <div class="event-content">
-              ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
-            <div class="description">${event.description}</div>
-          </div>
-            `;
+        const lunarDate = getLunarDateString(event);
+        eventDiv.innerHTML = `
+            <div class="event-content">
+                ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
+                <div class="description">${event.description}</div>
+            </div>
+        `;
 
         timeline.appendChild(eventDiv);
         observer.observe(eventDiv);
 
+        // Dot
         const dot = document.createElement("div");
         dot.className = "dot";
         timeline.appendChild(dot);
+
         eventDivs.push(eventDiv);
         dots.push(dot);
     });
 
-    // Position dots and year labels
+    // --- POSITIONING ---
     function positionAll() {
-    // Dots
-    eventDivs.forEach((eventDiv, i) => {
-        dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
-    });
+        // Position event dots
+        eventDivs.forEach((eventDiv, i) => {
+            dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
+        });
 
-    // Year labels
-    let eventIdx = 0;
-    let lastYearBottom = 0;
-    const yearLabelBuffer = 16; // px between year ovals
-
-    yearLabels.forEach((yearDiv, i) => {
-        // Find the first event after this year label
-        let found = false;
-        for (; eventIdx < eventDivs.length; eventIdx++) {
-            if (eventDivs[eventIdx].previousSibling === yearDiv) {
-                found = true;
-                break;
+        // Center each year-label in its spacer
+        yearLabels.forEach((yearDiv, i) => {
+            const spacer = spacers[i];
+            if (spacer) {
+                // Center the yearDiv in the spacer
+                const spacerRect = spacer.getBoundingClientRect();
+                const timelineRect = timeline.getBoundingClientRect();
+                // Calculate center of spacer, relative to timeline
+                const centerY = spacer.offsetTop + spacer.offsetHeight / 2;
+                yearDiv.style.top = centerY + "px";
             }
-        }
-        // Default: position above associated event dot
-        let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - 60;
-        // Prevent year label from going off top
-        if (y < 8) y = 8;
-        // If this year label would overlap the previous, push it down
-        if (i > 0) {
-            const minTop = lastYearBottom + yearLabelBuffer;
-            if (y < minTop) y = minTop;
-        }
-        yearDiv.style.top = y + "px";
-        lastYearBottom = y + yearDiv.offsetHeight;
-    });
-}
+        });
+    }
 
     setTimeout(positionAll, 0);
     window.addEventListener('resize', positionAll);
@@ -594,6 +607,6 @@ function getOrdinalSuffix(n) {
     adjustVerticalLineHeight();
     window.addEventListener('resize', adjustVerticalLineHeight);
 });
-   </script>
+</script>
 </body>
 </html>
