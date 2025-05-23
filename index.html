@@ -76,6 +76,7 @@
 }
 .year-label {
     position: absolute;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     /*... your existing styles ... */
@@ -526,27 +527,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- MAIN RENDERING LOOP ---
     events.forEach((event, index) => {
-        // When a new year starts, insert a spacer and a year-label
-        if (event.year !== lastYear) {
-            // Spacer (for vertical gap)
-            const spacer = document.createElement("div");
-            spacer.className = "year-spacer";
-            timeline.appendChild(spacer);
-            spacers.push(spacer);
+        // When a new year starts, insert a spacer and put the year-label inside it
+if (event.year !== lastYear) {
+    // Spacer (for vertical gap)
+    const spacer = document.createElement("div");
+    spacer.className = "year-spacer";
+    spacers.push(spacer);
 
-            // Year label (oval)
-            const yearDiv = document.createElement("div");
-            yearDiv.className = "year-label";
-            yearDiv.innerHTML = `
-                <div class="kanji-year">${event.japaneseKanji}</div>
-                <div class="romaji-year">${event.japaneseRomaji}</div>
-                <div class="western-year-label">${event.year}</div>
-            `;
-            timeline.appendChild(yearDiv);
-            yearLabels.push(yearDiv);
+    // Year label (oval)
+    const yearDiv = document.createElement("div");
+    yearDiv.className = "year-label";
+    yearDiv.innerHTML = `
+        <div class="kanji-year">${event.japaneseKanji}</div>
+        <div class="romaji-year">${event.japaneseRomaji}</div>
+        <div class="western-year-label">${event.year}</div>
+    `;
+    // Append year label inside the spacer
+    spacer.appendChild(yearDiv);
+    timeline.appendChild(spacer);
+    yearLabels.push(yearDiv);
 
-            lastYear = event.year;
-        }
+    lastYear = event.year;
+}
 
         // Event div
         const eventDiv = document.createElement("div");
@@ -579,18 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
             dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
         });
 
-        // Center each year-label in its spacer
-        yearLabels.forEach((yearDiv, i) => {
-            const spacer = spacers[i];
-            if (spacer) {
-                // Center the yearDiv in the spacer
-                const spacerRect = spacer.getBoundingClientRect();
-                const timelineRect = timeline.getBoundingClientRect();
-                // Calculate center of spacer, relative to timeline
-                const centerY = spacer.offsetTop + spacer.offsetHeight / 2;
-                yearDiv.style.top = centerY + "px";
-            }
-        });
+       
     }
 
     setTimeout(positionAll, 0);
