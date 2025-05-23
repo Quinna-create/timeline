@@ -65,7 +65,7 @@
     flex-direction: column;
     align-items: center;
     font-family: 'Noto Sans JP', 'Roboto', Arial, sans-serif;
-    margin-bottom: 40px; /* Add space below each year label */
+    
 }
 .kanji-year {
     font-family: 'Noto Serif JP', serif;
@@ -547,28 +547,38 @@ function getOrdinalSuffix(n) {
 
     // Position dots and year labels
     function positionAll() {
-        // Dots
-        eventDivs.forEach((eventDiv, i) => {
-            dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
-        });
-        // Year labels
-        let eventIdx = 0;
-        yearLabels.forEach((yearDiv, i) => {
-            // Find the first event after this year label
-            let found = false;
-            for (; eventIdx < eventDivs.length; eventIdx++) {
-                if (eventDivs[eventIdx].previousSibling === yearDiv) {
-                    // Place label above this event
-                    yearDiv.style.top = (eventDivs[eventIdx].offsetTop - 60) + "px";
-                    found = true;
-                    break;
-                }
+    // Dots
+    eventDivs.forEach((eventDiv, i) => {
+        dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
+    });
+
+    // Year labels
+    let eventIdx = 0;
+    let lastYearBottom = 0;
+    const yearLabelBuffer = 16; // px between year ovals
+
+    yearLabels.forEach((yearDiv, i) => {
+        // Find the first event after this year label
+        let found = false;
+        for (; eventIdx < eventDivs.length; eventIdx++) {
+            if (eventDivs[eventIdx].previousSibling === yearDiv) {
+                found = true;
+                break;
             }
-            if (!found && eventDivs[i]) {
-                yearDiv.style.top = (eventDivs[i].offsetTop - 60) + "px";
-            }
-        });
-    }
+        }
+        // Default: position above associated event dot
+        let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - 60;
+        // Prevent year label from going off top
+        if (y < 8) y = 8;
+        // If this year label would overlap the previous, push it down
+        if (i > 0) {
+            const minTop = lastYearBottom + yearLabelBuffer;
+            if (y < minTop) y = minTop;
+        }
+        yearDiv.style.top = y + "px";
+        lastYearBottom = y + yearDiv.offsetHeight;
+    });
+}
 
     setTimeout(positionAll, 0);
     window.addEventListener('resize', positionAll);
