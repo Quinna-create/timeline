@@ -572,7 +572,7 @@ events.forEach((event, index) => {
     });
 }
 
-    setTimeout(positionAll, 0);
+    requestAnimationFrame(positionAll);
     window.addEventListener('resize', positionAll);
     window.addEventListener('load', positionAll);
 
