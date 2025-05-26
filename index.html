@@ -160,18 +160,16 @@
     </style>
 </head>
 <body>
-    <div style="text-align:center; margin-bottom:20px;">
-        <label>
-            <input type="checkbox" id="sortToggle">
-            Sort by Chapter Order
-        </label>
+   <div style="text-align:center; margin-bottom:20px;">
+          <button id="sortToggleBtn">Sort by Chapter Order</button>
+    </div>
     </div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
         <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
     </div>
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+dodocument.addEventListener("DOMContentLoaded", function () {
     // Timeline globals
     let eventDivs = [];
     let dots = [];
@@ -179,6 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let yearLabelEventIndexes = [];
     const timeline = document.querySelector(".timeline");
     const sortToggle = document.getElementById("sortToggle");
+    let isChapterOrder = false; // Track current sort mode
+    const sortToggleBtn = document.getElementById("sortToggleBtn");
 
     // Your events array goes here (just ONE copy)
     const events = [
@@ -632,12 +632,22 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener('resize', adjustVerticalLineHeight);
 
     // Toggle handler
-    sortToggle.addEventListener('change', function() {
-        renderTimeline(this.checked);
-    });
+    let isChapterOrder = false;
+    const sortToggleBtn = document.getElementById("sortToggleBtn");
 
-    // Initial render
-    renderTimeline(false);
+    function updateButtonLabel() {
+        sortToggleBtn.textContent = isChapterOrder ? "Sort by Chronological Order" : "Sort by Chapter Order";
+}
+
+sortToggleBtn.addEventListener('click', function() {
+    isChapterOrder = !isChapterOrder;
+    renderTimeline(isChapterOrder);
+    updateButtonLabel();
+});
+
+// Initial render
+renderTimeline(isChapterOrder);
+updateButtonLabel();
 });
     </script>
 </body>
