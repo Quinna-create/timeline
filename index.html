@@ -555,12 +555,15 @@ events.forEach((event, index) => {
 
     // Year labels
     const yearLabelBuffer = 16; // px between year ovals
-    const yearDotBuffer = 40;   // px buffer between year label and dot
+    const yearDotBuffer = 40;   // px space between year label and dot
 
     let lastYearBottom = 0;
     yearLabels.forEach((yearDiv, i) => {
         const eventIdx = yearLabelEventIndexes[i];
-        let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - yearDotBuffer - yearDiv.offsetHeight;
+        // Get the dot's center position for this year's first event
+        const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
+        // Position the bottom of the year oval above the dot
+        let y = dotCenter - yearDotBuffer - yearDiv.offsetHeight;
         if (y < 8) y = 8;
         if (i > 0) {
             const minTop = lastYearBottom + yearLabelBuffer;
