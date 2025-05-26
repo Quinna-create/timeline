@@ -556,6 +556,7 @@ function getOrdinalSuffix(n) {
     let eventIdx = 0;
     let lastYearBottom = 0;
     const yearLabelBuffer = 16; // px between year ovals
+    const yearDotBuffer = 40; // or any value (try 32, 48, etc.) for more/less space this is px buffer between year label and dot
 
     yearLabels.forEach((yearDiv, i) => {
         // Find the first event after this year label
@@ -566,8 +567,8 @@ function getOrdinalSuffix(n) {
                 break;
             }
         }
-        // Default: position above associated event dot
-        let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - 60;
+        // position above associated event dot
+        let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - yearDotBuffer - yearDiv.offsetHeight;
         // Prevent year label from going off top
         if (y < 8) y = 8;
         // If this year label would overlap the previous, push it down
