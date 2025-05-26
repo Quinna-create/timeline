@@ -238,10 +238,10 @@
     text-align: center;
   }
   #sortToggleBtn {
-    margin-left: 0;
-    margin-top: 14px;
-    align-self: center;
-  }
+    width: 110px; /* Adjust as needed */
+    white-space: normal;
+    text-align: center;
+}
 }
         #timelineTitleMain {
     margin: 0;
@@ -274,7 +274,7 @@
       (Chronological Order)
     </div>
   </div>
-  <button id="sortToggleBtn">Sort by Chapter Order</button>
+  <button id="sortToggleBtn">Chapter<br>Order</button>
 </div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
@@ -746,8 +746,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Toggle handler
         function updateButtonLabel() {
-        sortToggleBtn.textContent = isChapterOrder ? "Chronological Order" : "Chapter Order";
-    }
+        sortToggleBtn.innerHTML = isChapterOrder
+        ? "Chronological<br>Order"
+        : "Chapter<br>Order";
+}
     function updateHeaderTitle() {
         timelineTitleSub.textContent = isChapterOrder
             ? "(Chapter Order)"
