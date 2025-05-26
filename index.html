@@ -152,6 +152,15 @@
             display: table;
             clear: both;
         }
+
+        .chapter-line {
+              font-family: 'Roboto', Arial, sans-serif; /* Or another font if you wish */
+              font-size: 0.98em;
+              color: #a89c82;
+              margin-top: 5px;
+              font-style: italic;
+              letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -537,11 +546,12 @@ events.forEach((event, index) => {
     
     const lunarDate = getLunarDateString(event);
             eventDiv.innerHTML = `
-              <div class="event-content">
-              ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
+      <div class="event-content">
+        ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
             <div class="description">${event.description}</div>
-          </div>
-            `;
+            ${event.chapter ? `<div class="chapter-line">Chapter ${event.chapter}</div>` : ""}
+      </div>
+`;
 
         timeline.appendChild(eventDiv);
         observer.observe(eventDiv);
