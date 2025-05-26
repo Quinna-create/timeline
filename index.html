@@ -34,66 +34,64 @@
             z-index: 1;
         }
         .dot {
-    position: absolute;
-    left: 50%;
-    width: 18px;
-    height: 18px;
-    background: radial-gradient(circle at 60% 40%, #d3c5aa 60%, #a89c82 100%);
-    border: 2px solid #8c7e58;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    box-shadow: 0 1px 4px rgba(100, 80, 40, 0.10);
-}
+            position: absolute;
+            left: 50%;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 60% 40%, #d3c5aa 60%, #a89c82 100%);
+            border: 2px solid #8c7e58;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 1px 4px rgba(100, 80, 40, 0.10);
+        }
         .year-label {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: 
-         linear-gradient(135deg, #f3e9d2 60%, #bfae8e 100%),
-         url('https://www.transparenttextures.com/patterns/old-mathematics.png');
-    background-blend-mode: multiply;
-    color: #584e36;
-    border-radius: 26px;
-    padding: 12px 32px;
-    font-weight: normal;
-    border: none; /* No border */
-    z-index: 3;
-    box-shadow: 0 2px 8px rgba(100, 80, 40, 0.1);
-    white-space: nowrap;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Noto Sans JP', 'Roboto', Arial, sans-serif;
-    
-}
-.kanji-year {
-    font-family: 'Noto Serif JP', serif;
-    font-weight: bold;
-    font-size: 1.7em;
-    color: #bba14f; /* Muted gold */
-    margin-bottom: 2px;
-    letter-spacing: 1px;
-}
-.romaji-year {
-    font-size: 1em;
-    color: #8c7e58;
-    margin-bottom: 1px;
-}
-.western-year-label {
-    font-size: 0.85em;
-    color: #b4a078;
-    margin-top: 2px;
-}
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: 
+                linear-gradient(135deg, #f3e9d2 60%, #bfae8e 100%),
+                url('https://www.transparenttextures.com/patterns/old-mathematics.png');
+            background-blend-mode: multiply;
+            color: #584e36;
+            border-radius: 26px;
+            padding: 12px 32px;
+            font-weight: normal;
+            border: none;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(100, 80, 40, 0.1);
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Noto Sans JP', 'Roboto', Arial, sans-serif;
+        }
+        .kanji-year {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: bold;
+            font-size: 1.7em;
+            color: #bba14f;
+            margin-bottom: 2px;
+            letter-spacing: 1px;
+        }
+        .romaji-year {
+            font-size: 1em;
+            color: #8c7e58;
+            margin-bottom: 1px;
+        }
+        .western-year-label {
+            font-size: 0.85em;
+            color: #b4a078;
+            margin-top: 2px;
+        }
         .date-string {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #bfae8e;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
-    font-family: 'Noto Serif JP', serif;
-}
-        .timeline .dot { }
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #bfae8e;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            font-family: 'Noto Serif JP', serif;
+        }
         .event {
             clear: both;
             background: transparent;
@@ -142,7 +140,6 @@
             box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
             transform: scale(1.05);
         }
-        
         .description {
             font-size: 16px;
             line-height: 1.6;
@@ -152,28 +149,40 @@
             display: table;
             clear: both;
         }
-
         .chapter-line {
-              font-family: 'Roboto', Arial, sans-serif; /* Or another font if you wish */
-              font-size: 0.98em;
-              color: #a89c82;
-              margin-top: 5px;
-              font-style: italic;
-              letter-spacing: 0.5px;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 0.98em;
+            color: #a89c82;
+            margin-top: 5px;
+            font-style: italic;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
-   <div class="timeline-container">
-      <div class="vertical-line"></div>
-      <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
-   </div>
-   <script>
+    <div style="text-align:center; margin-bottom:20px;">
+        <label>
+            <input type="checkbox" id="sortToggle">
+            Sort by Chapter Order
+        </label>
+    </div>
+    <div class="timeline-container">
+        <div class="vertical-line"></div>
+        <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
+    </div>
+    <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // Timeline globals
+    let eventDivs = [];
+    let dots = [];
+    let yearLabels = [];
+    let yearLabelEventIndexes = [];
     const timeline = document.querySelector(".timeline");
-    const yearLabelEventIndexes = [];
+    const sortToggle = document.getElementById("sortToggle");
+
+    // Your events array goes here (just ONE copy)
     const events = [
-  {
+       {
     year: 1849,
     japaneseKanji: "嘉永2年",
     japaneseRomaji: "Kaei 2",
@@ -467,15 +476,54 @@ document.addEventListener("DOMContentLoaded", function () {
     chapter: 14,
     description: "Battle of Toba-Fushimi, after which the Shinsengumi is driven out of Kyoto",
   }
-];
 
-          // Sort events by year, month, day
-    events.sort((a, b) => {
-        if (a.year !== b.year) return a.year - b.year;
-        if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
-        return (a.day || 0) - (b.day || 0);
-    });
+    ];
 
+    // Helper: sort by date or chapter
+    function sortEvents(events, byChapter) {
+        if (byChapter) {
+            return events.slice().sort((a, b) => {
+                const aCh = a.chapter != null ? a.chapter : 9999;
+                const bCh = b.chapter != null ? b.chapter : 9999;
+                if (aCh !== bCh) return aCh - bCh;
+                if (a.year !== b.year) return a.year - b.year;
+                if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+                return (a.day || 0) - (b.day || 0);
+            });
+        } else {
+            return events.slice().sort((a, b) => {
+                if (a.year !== b.year) return a.year - b.year;
+                if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+                return (a.day || 0) - (b.day || 0);
+            });
+        }
+    }
+
+    // Helper: lunar date
+    function getLunarDateString(event) {
+        const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
+        const monthStr = event.month ? `the ${event.month}${getOrdinalSuffix(event.month)} lunar month` : '';
+        if (event.day && event.month) {
+            return `${dayStr} of ${monthStr}`;
+        } else if (event.day) {
+            return dayStr;
+        } else if (event.month) {
+            return monthStr;
+        } else {
+            return '';
+        }
+    }
+    function getOrdinalSuffix(n) {
+        if (n > 10 && n < 20) return 'th';
+        switch (n % 10) {
+            case 1:  return 'st';
+            case 2:  return 'nd';
+            case 3:  return 'rd';
+            default: return 'th';
+        }
+    }
+
+    // Intersection Observer for fade-in
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -491,122 +539,85 @@ document.addEventListener("DOMContentLoaded", function () {
         { rootMargin: "300px", threshold: 0.05 }
     );
 
-    let lastYear = null;
-    const eventDivs = [];
-    const dots = [];
-    const yearLabels = [];
+    // Render timeline
+    function renderTimeline(byChapter) {
+        timeline.innerHTML = '';
+        eventDivs = [];
+        dots = [];
+        yearLabels = [];
+        yearLabelEventIndexes = [];
+        let lastYear = null;
+        const sortedEvents = sortEvents(events, byChapter);
 
-       function getLunarDateString(event) {
-    const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
-    const monthStr = event.month ? `the ${event.month}${getOrdinalSuffix(event.month)} lunar month` : '';
-    if (event.day && event.month) {
-        return `${dayStr} of ${monthStr}`;
-    } else if (event.day) {
-        return dayStr;
-    } else if (event.month) {
-        return monthStr;
-    } else {
-        return ''; // No date
-    }
-}
+        sortedEvents.forEach((event, index) => {
+            const isFirstOfYear = (event.year !== lastYear);
 
-function getOrdinalSuffix(n) {
-    if (n > 10 && n < 20) return 'th';
-    switch (n % 10) {
-        case 1:  return 'st';
-        case 2:  return 'nd';
-        case 3:  return 'rd';
-        default: return 'th';
-    }
-}
-events.forEach((event, index) => {
-    const isFirstOfYear = (event.year !== lastYear);
-
-    if (isFirstOfYear) {
-        const yearDiv = document.createElement("div");
-        yearDiv.className = "year-label";
-        yearDiv.innerHTML = `
-            <div class="kanji-year">${event.japaneseKanji}</div>
-            <div class="romaji-year">${event.japaneseRomaji}</div>
-            <div class="western-year-label">${event.year}</div>
-        `;
-        timeline.appendChild(yearDiv);
-        yearLabels.push(yearDiv);
-        yearLabelEventIndexes.push(eventDivs.length); // <--- change here
-        lastYear = event.year;
-    }
-
-    const eventDiv = document.createElement("div");
-    eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
-
-    // Add extra margin-top to the first event of each year
-    if (isFirstOfYear) {
-        eventDiv.style.marginTop = "80px"; // Adjust this value as needed
-    }
-    
-    const lunarDate = getLunarDateString(event);
-            eventDiv.innerHTML = `
-      <div class="event-content">
-        ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
-            <div class="description">${event.description}</div>
-            ${event.chapter ? `<div class="chapter-line">Chapter ${event.chapter}</div>` : ""}
-      </div>
-`;
-
-        timeline.appendChild(eventDiv);
-        observer.observe(eventDiv);
-
-        const dot = document.createElement("div");
-        dot.className = "dot";
-        timeline.appendChild(dot);
-        eventDivs.push(eventDiv);
-        dots.push(dot);
-    });
-
-    // Position dots and year labels
-    function positionAll() {
-    // Dots
-    eventDivs.forEach((eventDiv, i) => {
-        dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
-    });
-
-    const yearLabelBuffer = 25; // px between year ovals
-    const yearDotBuffer = 45;   // px space between year label and dot
-
-    let lastYearBottom = 0;
-    yearLabels.forEach((yearDiv, i) => {
-        const eventIdx = yearLabelEventIndexes[i];
-        const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
-        let y = dotCenter - yearDotBuffer - (yearDiv.offsetHeight / 2);
-
-        if (y < 8) y = 8;
-
-        // Ensure at least yearLabelBuffer below the previous year oval
-        if (i > 0) {
-            const minTopFromPrevOval = lastYearBottom + yearLabelBuffer;
-            if (y < minTopFromPrevOval) y = minTopFromPrevOval;
-        }
-
-        // Ensure the *bottom* of the year label is at least yearLabelBuffer below the previous event's bottom
-        if (i > 0) {
-            let prevEventIdx = yearLabelEventIndexes[i] - 1;
-            if (prevEventIdx >= 0) {
-                let prevEventBottom = eventDivs[prevEventIdx].offsetTop + eventDivs[prevEventIdx].offsetHeight;
-                let minYearLabelTop = prevEventBottom + yearLabelBuffer - yearDiv.offsetHeight;
-                if (y < minYearLabelTop) y = minYearLabelTop;
+            if (isFirstOfYear) {
+                const yearDiv = document.createElement("div");
+                yearDiv.className = "year-label";
+                yearDiv.innerHTML = `
+                    <div class="kanji-year">${event.japaneseKanji || ""}</div>
+                    <div class="romaji-year">${event.japaneseRomaji || ""}</div>
+                    <div class="western-year-label">${event.year}</div>
+                `;
+                timeline.appendChild(yearDiv);
+                yearLabels.push(yearDiv);
+                yearLabelEventIndexes.push(eventDivs.length);
+                lastYear = event.year;
             }
-        }
 
-        yearDiv.style.top = y + "px";
-        lastYearBottom = y + yearDiv.offsetHeight;
-    });
-}
+            const eventDiv = document.createElement("div");
+            eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
+            if (isFirstOfYear) eventDiv.style.marginTop = "80px";
+            const lunarDate = getLunarDateString(event);
+            eventDiv.innerHTML = `
+                <div class="event-content">
+                    ${lunarDate ? `<div class="date-string">${lunarDate}</div>` : ""}
+                    <div class="description">${event.description}</div>
+                    ${event.chapter ? `<div class="chapter-line">Chapter ${event.chapter}</div>` : ""}
+                </div>
+            `;
+            timeline.appendChild(eventDiv);
+            observer.observe(eventDiv);
+            const dot = document.createElement("div");
+            dot.className = "dot";
+            timeline.appendChild(dot);
+            eventDivs.push(eventDiv);
+            dots.push(dot);
+        });
 
-      
+        requestAnimationFrame(positionAll);
+        adjustVerticalLineHeight();
+    }
 
-    requestAnimationFrame(positionAll);
-    window.addEventListener('resize', positionAll);
-    window.addEventListener('load', positionAll);
+    // Position year labels/dots
+    function positionAll() {
+        eventDivs.forEach((eventDiv, i) => {
+            dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
+        });
+
+        const yearLabelBuffer = 25;
+        const yearDotBuffer = 45;
+        let lastYearBottom = 0;
+        yearLabels.forEach((yearDiv, i) => {
+            const eventIdx = yearLabelEventIndexes[i];
+            const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
+            let y = dotCenter - yearDotBuffer - (yearDiv.offsetHeight / 2);
+            if (y < 8) y = 8;
+            if (i > 0) {
+                const minTopFromPrevOval = lastYearBottom + yearLabelBuffer;
+                if (y < minTopFromPrevOval) y = minTopFromPrevOval;
+                let prevEventIdx = yearLabelEventIndexes[i] - 1;
+                if (prevEventIdx >= 0) {
+                    let prevEventBottom = eventDivs[prevEventIdx].offsetTop + eventDivs[prevEventIdx].offsetHeight;
+                    let minYearLabelTop = prevEventBottom + yearLabelBuffer - yearDiv.offsetHeight;
+                    if (y < minYearLabelTop) y = minYearLabelTop;
+                }
+            }
+            yearDiv.style.top = y + "px";
+            lastYearBottom = y + yearDiv.offsetHeight;
+        });
+    }
 
     // Adjust vertical line height
     function adjustVerticalLineHeight() {
@@ -615,10 +626,19 @@ events.forEach((event, index) => {
             verticalLine.style.height = timeline.scrollHeight + 'px';
         }
     }
-    adjustVerticalLineHeight();
+
+    window.addEventListener('resize', positionAll);
+    window.addEventListener('load', positionAll);
     window.addEventListener('resize', adjustVerticalLineHeight);
+
+    // Toggle handler
+    sortToggle.addEventListener('change', function() {
+        renderTimeline(this.checked);
+    });
+
+    // Initial render
+    renderTimeline(false);
 });
-   </script>
+    </script>
 </body>
 </html>
-
