@@ -163,21 +163,18 @@
    <div style="text-align:center; margin-bottom:20px;">
           <button id="sortToggleBtn">Sort by Chapter Order</button>
     </div>
-    </div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
         <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
     </div>
     <script>
-dodocument.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     // Timeline globals
     let eventDivs = [];
     let dots = [];
     let yearLabels = [];
     let yearLabelEventIndexes = [];
     const timeline = document.querySelector(".timeline");
-    const sortToggle = document.getElementById("sortToggle");
-    let isChapterOrder = false; // Track current sort mode
     const sortToggleBtn = document.getElementById("sortToggleBtn");
 
     // Your events array goes here (just ONE copy)
@@ -632,22 +629,19 @@ dodocument.addEventListener("DOMContentLoaded", function () {
     window.addEventListener('resize', adjustVerticalLineHeight);
 
     // Toggle handler
-    let isChapterOrder = false;
-    const sortToggleBtn = document.getElementById("sortToggleBtn");
-
-    function updateButtonLabel() {
+        function updateButtonLabel() {
         sortToggleBtn.textContent = isChapterOrder ? "Sort by Chronological Order" : "Sort by Chapter Order";
-}
+    }
 
-sortToggleBtn.addEventListener('click', function() {
-    isChapterOrder = !isChapterOrder;
+    sortToggleBtn.addEventListener('click', function() {
+        isChapterOrder = !isChapterOrder;
+        renderTimeline(isChapterOrder);
+        updateButtonLabel();
+    });
+
+    // Initial render
     renderTimeline(isChapterOrder);
     updateButtonLabel();
-});
-
-// Initial render
-renderTimeline(isChapterOrder);
-updateButtonLabel();
 });
     </script>
 </body>
