@@ -560,39 +560,39 @@ events.forEach((event, index) => {
         dots[i].style.top = (eventDiv.offsetTop + eventDiv.offsetHeight / 2) + "px";
     });
 
-    // Year labels
     const yearLabelBuffer = 32; // px between year ovals
     const yearDotBuffer = 60;   // px space between year label and dot
 
     let lastYearBottom = 0;
-    let lastEventBottomOfPreviousYear = 0;
-    let prevYear = null;
     yearLabels.forEach((yearDiv, i) => {
-    const eventIdx = yearLabelEventIndexes[i];
-    const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
-    let y = dotCenter - yearDotBuffer - (yearDiv.offsetHeight / 2);
+        const eventIdx = yearLabelEventIndexes[i];
+        const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
+        let y = dotCenter - yearDotBuffer - (yearDiv.offsetHeight / 2);
 
-    if (y < 8) y = 8;
+        if (y < 8) y = 8;
 
-    // Ensure at least yearLabelBuffer below the previous year oval
+        // Ensure at least yearLabelBuffer below the previous year oval
         if (i > 0) {
             const minTopFromPrevOval = lastYearBottom + yearLabelBuffer;
             if (y < minTopFromPrevOval) y = minTopFromPrevOval;
         }
 
-        // Ensure at least yearLabelBuffer below the last event of the previous year
+        // Ensure the *bottom* of the year label is at least yearLabelBuffer below the previous event's bottom
         if (i > 0) {
             let prevEventIdx = yearLabelEventIndexes[i] - 1;
             if (prevEventIdx >= 0) {
                 let prevEventBottom = eventDivs[prevEventIdx].offsetTop + eventDivs[prevEventIdx].offsetHeight;
-                let minTopFromPrevEvent = prevEventBottom + yearLabelBuffer;
-                if (y < minTopFromPrevEvent) y = minTopFromPrevEvent;
+                let minYearLabelTop = prevEventBottom + yearLabelBuffer - yearDiv.offsetHeight;
+                if (y < minYearLabelTop) y = minYearLabelTop;
             }
         }
-    yearDiv.style.top = y + "px";
-    lastYearBottom = y + yearDiv.offsetHeight;
-});
+
+        yearDiv.style.top = y + "px";
+        lastYearBottom = y + yearDiv.offsetHeight;
+    });
 }
+
+      
 
     requestAnimationFrame(positionAll);
     window.addEventListener('resize', positionAll);
