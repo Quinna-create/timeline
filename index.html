@@ -157,6 +157,35 @@
             font-style: italic;
             letter-spacing: 0.5px;
         }
+        #sortToggleBtn {
+             background: linear-gradient(135deg, #f3e9d2 60%, #bfae8e 100%),
+                url('https://www.transparenttextures.com/patterns/old-mathematics.png');
+            background-blend-mode: multiply;
+            color: #584e36;
+            font-family: 'Noto Serif JP', 'Roboto', Arial, sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            padding: 12px 32px;
+            border-radius: 26px;
+            border: none;
+            box-shadow: 0 2px 8px rgba(100, 80, 40, 0.15);
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+            outline: none;
+            margin-bottom: 10px;
+        }
+            #sortToggleBtn:hover, #sortToggleBtn:focus {
+            background: linear-gradient(135deg, #e7d3a1 70%, #bfae8e 100%),
+                url('https://www.transparenttextures.com/patterns/old-mathematics.png');
+            box-shadow: 0 4px 16px rgba(100, 80, 40, 0.3);
+            transform: scale(1.03);
+            color: #bba14f;
+        }
+        #sortToggleBtn {
+            display: inline-block;
+            margin: 0 auto 20px auto;
+        }
     </style>
 </head>
 <body>
@@ -310,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
     year: 1864, month: 6, day: 5,
     japaneseKanji: "元治元年",
     japaneseRomaji: "Genji 1",
-    chapter: 4 & 8,
+    chapter: "4 & 8",
     description: "Ikedaya Incident, chp 4 & chp 8; organizational structure redrawn, corporal becomes sergent;",
   },
   {
