@@ -560,10 +560,8 @@ events.forEach((event, index) => {
     let lastYearBottom = 0;
     yearLabels.forEach((yearDiv, i) => {
         const eventIdx = yearLabelEventIndexes[i];
-        // Get the dot's center position for this year's first event
         const dotCenter = eventDivs[eventIdx].offsetTop + eventDivs[eventIdx].offsetHeight / 2;
-        // Position the bottom of the year oval above the dot
-        let y = dotCenter - yearDotBuffer - yearDiv.offsetHeight;
+        let y = dotCenter - yearDotBuffer - (yearDiv.offsetHeight / 2);
         if (y < 8) y = 8;
         if (i > 0) {
             const minTop = lastYearBottom + yearLabelBuffer;
