@@ -161,7 +161,9 @@
              background: linear-gradient(135deg, #f3e9d2 60%, #bfae8e 100%),
                 url('https://www.transparenttextures.com/patterns/old-mathematics.png');
             background-blend-mode: multiply;
-            color: #584e36;
+            background: linear-gradient(135deg, #3b5ca6 60%, #6da3e8 100%);
+    color: #fff;
+    border: none;
             font-family: 'Noto Serif JP', 'Roboto', Arial, sans-serif;
             font-size: 1.1em;
             font-weight: bold;
@@ -197,7 +199,8 @@
 }
         }
         #sortToggleBtn:hover, #sortToggleBtn:focus {
-    background: linear-gradient(135deg, #e7d3a1 70%, #bfae8e 100%),
+    background: linear-gradient(135deg, #2c4373 70%, #5086c1 100%);
+    color: #ffe082;
                 url('https://www.transparenttextures.com/patterns/old-mathematics.png');
     box-shadow: 0 4px 16px rgba(100, 80, 40, 0.2);
     transform: scale(1.03);
@@ -274,7 +277,7 @@
       (Chronological Order)
     </div>
   </div>
-  <button id="sortToggleBtn">Chapter<br>Order</button>
+  <button id="sortToggleBtn">Switch to<br>Chapter<br>Order</button>
 </div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
@@ -747,8 +750,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Toggle handler
         function updateButtonLabel() {
         sortToggleBtn.innerHTML = isChapterOrder
-        ? "Chronological<br>Order"
-        : "Chapter<br>Order";
+        ? "Switch to<br>Chronological<br>Order"
+        : "Switch to<br>Chapter<br>Order";
 }
     function updateHeaderTitle() {
         timelineTitleSub.textContent = isChapterOrder
