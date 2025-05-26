@@ -520,10 +520,10 @@ events.forEach((event, index) => {
             <div class="western-year-label">${event.year}</div>
         `;
         timeline.appendChild(yearDiv);
-        yearLabels.push(yearDiv);
-        yearLabelEventIndexes.push(index); // map label to first event
-        lastYear = event.year;
-    }
+    yearLabels.push(yearDiv);
+    yearLabelEventIndexes.push(eventDivs.length); // <--- change here
+    lastYear = event.year;
+}
 
         const eventDiv = document.createElement("div");
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
