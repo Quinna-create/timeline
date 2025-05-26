@@ -186,11 +186,28 @@
             display: inline-block;
             margin: 0 auto 20px auto;
         }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+            padding: 0 20px;
+        }
+        #timelineTitle {
+            margin: 0;
+            font-size: 2em;
+            font-family: 'Noto Serif JP', 'Roboto', Arial, sans-serif;
+            color: #bba14f;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
-   <div style="text-align:center; margin-bottom:20px;">
-          <button id="sortToggleBtn">Chapter Order</button>
+   <div class="timeline-header">
+      <h1 id="timelineTitle">Shinsengumi Timeline (Chronological Order)</h1>
+      <button id="sortToggleBtn">Sort by Chapter Order</button>
     </div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
@@ -662,17 +679,24 @@ document.addEventListener("DOMContentLoaded", function () {
         function updateButtonLabel() {
         sortToggleBtn.textContent = isChapterOrder ? "Sort by Chronological Order" : "Sort by Chapter Order";
     }
+    function updateHeaderTitle() {
+        timelineTitle.textContent = isChapterOrder
+            ? "Shinsengumi Timeline (Chapter Order)"
+            : "Shinsengumi Timeline (Chronological Order)";
+    }
 
     sortToggleBtn.addEventListener('click', function() {
         isChapterOrder = !isChapterOrder;
         renderTimeline(isChapterOrder);
         updateButtonLabel();
+        updateHeaderTitle();
     });
 
     // Initial render
     renderTimeline(isChapterOrder);
-    updateButtonLabel();
-});
+        updateButtonLabel();
+        updateHeaderTitle();
+    });
     </script>
 </body>
 </html>
