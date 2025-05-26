@@ -567,22 +567,21 @@ events.forEach((event, index) => {
 
     if (y < 8) y = 8;
 
-    // Maintain minimum distance from the previous year label
-    if (i > 0) {
-        const minTop = lastYearBottom + yearLabelBuffer;
-        if (y < minTop) y = minTop;
-    }
-
-    // Maintain minimum distance from the last event of the previous year
-    if (i > 0) {
-        let prevEventIdx = yearLabelEventIndexes[i] - 1;
-        if (prevEventIdx >= 0) {
-            let prevEventBottom = eventDivs[prevEventIdx].offsetTop + eventDivs[prevEventIdx].offsetHeight;
-            let minLabelTop = prevEventBottom + yearLabelBuffer;
-            if (y < minLabelTop) y = minLabelTop;
+    // Ensure at least yearLabelBuffer below the previous year oval
+        if (i > 0) {
+            const minTopFromPrevOval = lastYearBottom + yearLabelBuffer;
+            if (y < minTopFromPrevOval) y = minTopFromPrevOval;
         }
-    }
 
+        // Ensure at least yearLabelBuffer below the last event of the previous year
+        if (i > 0) {
+            let prevEventIdx = yearLabelEventIndexes[i] - 1;
+            if (prevEventIdx >= 0) {
+                let prevEventBottom = eventDivs[prevEventIdx].offsetTop + eventDivs[prevEventIdx].offsetHeight;
+                let minTopFromPrevEvent = prevEventBottom + yearLabelBuffer;
+                if (y < minTopFromPrevEvent) y = minTopFromPrevEvent;
+            }
+        }
     yearDiv.style.top = y + "px";
     lastYearBottom = y + yearDiv.offsetHeight;
 });
