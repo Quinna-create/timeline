@@ -509,20 +509,21 @@ function getOrdinalSuffix(n) {
         default: return 'th';
     }
 }
-    events.forEach((event, index) => {
-        // Insert year label if it's a new year
-        if (event.year !== lastYear) {
-            const yearDiv = document.createElement("div");
-            yearDiv.className = "year-label";
-            yearDiv.innerHTML = `
-  <div class="kanji-year">${event.japaneseKanji}</div>
-  <div class="romaji-year">${event.japaneseRomaji}</div>
-  <div class="western-year-label">${event.year}</div>
-`;
-            timeline.appendChild(yearDiv);
-            yearLabels.push(yearDiv);
-            lastYear = event.year;
-        }
+    const yearLabelEventIndexes = [];
+events.forEach((event, index) => {
+    if (event.year !== lastYear) {
+        const yearDiv = document.createElement("div");
+        yearDiv.className = "year-label";
+        yearDiv.innerHTML = `
+            <div class="kanji-year">${event.japaneseKanji}</div>
+            <div class="romaji-year">${event.japaneseRomaji}</div>
+            <div class="western-year-label">${event.year}</div>
+        `;
+        timeline.appendChild(yearDiv);
+        yearLabels.push(yearDiv);
+        yearLabelEventIndexes.push(index); // map label to first event
+        lastYear = event.year;
+    }
 
         const eventDiv = document.createElement("div");
         eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
@@ -553,25 +554,14 @@ function getOrdinalSuffix(n) {
     });
 
     // Year labels
-    let eventIdx = 0;
-    let lastYearBottom = 0;
     const yearLabelBuffer = 16; // px between year ovals
-    const yearDotBuffer = 40; // or any value (try 32, 48, etc.) for more/less space this is px buffer between year label and dot
+    const yearDotBuffer = 40;   // px buffer between year label and dot
 
+    let lastYearBottom = 0;
     yearLabels.forEach((yearDiv, i) => {
-        // Find the first event after this year label
-        let found = false;
-        for (; eventIdx < eventDivs.length; eventIdx++) {
-            if (eventDivs[eventIdx].previousSibling === yearDiv) {
-                found = true;
-                break;
-            }
-        }
-        // position above associated event dot
+        const eventIdx = yearLabelEventIndexes[i];
         let y = (eventDivs[eventIdx] ? eventDivs[eventIdx].offsetTop : 0) - yearDotBuffer - yearDiv.offsetHeight;
-        // Prevent year label from going off top
         if (y < 8) y = 8;
-        // If this year label would overlap the previous, push it down
         if (i > 0) {
             const minTop = lastYearBottom + yearLabelBuffer;
             if (y < minTop) y = minTop;
