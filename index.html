@@ -510,7 +510,6 @@ function getOrdinalSuffix(n) {
         default: return 'th';
     }
 }
-    const yearLabelEventIndexes = [];
 events.forEach((event, index) => {
     if (event.year !== lastYear) {
         const yearDiv = document.createElement("div");
