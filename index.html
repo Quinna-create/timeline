@@ -175,7 +175,7 @@
             outline: none;
             margin-bottom: 10px;
         }
-           #sortToggleBtn {
+         #sortToggleBtn {
     background: linear-gradient(135deg, #f3e9d2 60%, #bfae8e 100%),
                 url('https://www.transparenttextures.com/patterns/old-mathematics.png');
     background-blend-mode: multiply;
@@ -193,22 +193,23 @@
     outline: none;
     margin-bottom: 8px;
     margin-left: 24px;
-    align-self: flex-start; /* aligns button to the top right */
+    align-self: flex-start;
 }
         }
         #sortToggleBtn:hover, #sortToggleBtn:focus {
-            background: linear-gradient(135deg, #e7d3a1 70%, #bfae8e 100%),
-                    url('https://www.transparenttextures.com/patterns/old-mathematics.png');
-            box-shadow: 0 4px 16px rgba(100, 80, 40, 0.2);
-            transform: scale(1.03);
-            color: #bba14f;
-        }
+    background: linear-gradient(135deg, #e7d3a1 70%, #bfae8e 100%),
+                url('https://www.transparenttextures.com/patterns/old-mathematics.png');
+    box-shadow: 0 4px 16px rgba(100, 80, 40, 0.2);
+    transform: scale(1.03);
+    color: #bba14f;
+}
+
         #sortToggleBtn {
             display: inline-block;
             margin: 0 auto 20px auto;
         }
 
-        .timeline-header {
+       .timeline-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -225,21 +226,23 @@
             color: #bba14f;
             letter-spacing: 1px;
         }
-        @media (max-width: 600px) {
-            .timeline-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
-          }
-          #timelineTitle {
-            font-size: 1.4em;
-          }
-        }
-        .timeline-title-wrapper {
-    flex: 1;
+       @media (max-width: 600px) {
+  .timeline-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .side-spacer {
+    display: none;
+  }
+  .timeline-title-wrapper {
     text-align: center;
+  }
+  #sortToggleBtn {
+    margin-left: 0;
+    margin-top: 14px;
+    align-self: center;
+  }
 }
-
         #timelineTitleMain {
     margin: 0;
     font-size: 2em;
@@ -249,27 +252,30 @@
     line-height: 1.1;
 }
 
+
         .header-sub {
     font-size: 1.1em;
     color: #bfae8e;
-    font-family: 'Noto Serif JP', serif; /* matches timeline year markers */
+    font-family: 'Noto Serif JP', serif;
     margin-top: 2px;
     margin-bottom: 0;
     letter-spacing: 0.2px;
     font-weight: bold;
 }
+
     </style>
 </head>
 <body>
    <div class="timeline-header">
-      <div class="timeline-title-wrapper">
-        <h1 id="timelineTitleMain">Shinsengumi Timeline</h1>
-        <div id="timelineTitleSub" class="header-sub">
-          (Chronological Order)
-        </div>
-      </div>
-          <button id="sortToggleBtn">Sort by Chapter Order</button>
+  <div class="side-spacer"></div>
+  <div class="timeline-title-wrapper">
+    <h1 id="timelineTitleMain">Shinsengumi Timeline</h1>
+    <div id="timelineTitleSub" class="header-sub">
+      (Chronological Order)
     </div>
+  </div>
+  <button id="sortToggleBtn">Sort by Chapter Order</button>
+</div>
     <div class="timeline-container">
         <div class="vertical-line"></div>
         <div class="timeline" role="list" aria-label="Shinsengumi Timeline"></div>
