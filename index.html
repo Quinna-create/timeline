@@ -180,10 +180,13 @@
     line-height: 1.2;
 }
 
-       #sortToggleBtn:hover, #sortToggleBtn:focus {
-    background: linear-gradient(135deg, #2c4373 70%, #5086c1 100%);
-    color: #ffe082;
-    transform: scale(1.03);
+      #sortToggleBtn:hover {
+            background: linear-gradient(135deg, #2c4373 70%, #5086c1 100%);
+            color: #ffe082;
+            transform: scale(1.03);
+}
+    #sortToggleBtn:focus {
+         outline: 2px solid #ffe082;
 }
 
        .timeline-header {
@@ -734,6 +737,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderTimeline(isChapterOrder);
         updateButtonLabel();
         updateHeaderTitle();
+        sortToggleBtn.blur();
     });
 
     // Initial render
