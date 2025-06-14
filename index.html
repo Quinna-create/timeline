@@ -642,6 +642,14 @@ const eraOrder = {
     const num = match[1].replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 65248));
     return parseInt(num, 10);
 }
+    // Map of era name to their change date (first day of the new era)
+const eraChangeDates = {
+    '文久': { year: 1861, month: 2, day: 19 }, // Bunkyū 1
+    '元治': { year: 1864, month: 2, day: 20 }, // Genji 1
+    '慶応': { year: 1865, month: 4, day: 7 },  // Keiō 1
+    '明治': { year: 1868, month: 9, day: 8 },  // Meiji 1
+    // Add more as needed
+};
     // Helper: sort by date or chapter
     function sortEvents(events, byChapter) {
     if (byChapter) {
@@ -649,24 +657,51 @@ const eraOrder = {
             const aCh = a.chapter != null ? a.chapter : 9999;
             const bCh = b.chapter != null ? b.chapter : 9999;
             if (aCh !== bCh) return aCh - bCh;
-            // This line is fine for chapter order:
             if (a.year !== b.year) return a.year - b.year;
             if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
             return (a.day || 0) - (b.day || 0);
         });
     } else {
         return events.slice().sort((a, b) => {
+            // 1. Western year first
+            if (a.year !== b.year) return a.year - b.year;
+
+            // 2. Check for era transitions within the same year
             const aEra = getEraPrefix(a.japaneseKanji);
             const bEra = getEraPrefix(b.japaneseKanji);
+
+            // If eras are different and this is a change year, sort by era change date
+            if (aEra !== bEra) {
+                // If a is the new era starting this year
+                if (eraChangeDates[aEra] && a.year === eraChangeDates[aEra].year) {
+                    const change = eraChangeDates[aEra];
+                    const bMonth = b.month || 0, bDay = b.day || 0;
+                    // b is before the era change date
+                    if (bMonth < change.month || (bMonth === change.month && bDay < change.day)) {
+                        return 1; // b (old era) comes first
+                    } else {
+                        return -1; // a (new era) comes after
+                    }
+                }
+                // If b is the new era starting this year
+                if (eraChangeDates[bEra] && b.year === eraChangeDates[bEra].year) {
+                    const change = eraChangeDates[bEra];
+                    const aMonth = a.month || 0, aDay = a.day || 0;
+                    // a is before the era change date
+                    if (aMonth < change.month || (aMonth === change.month && aDay < change.day)) {
+                        return -1; // a (old era) comes first
+                    } else {
+                        return 1; // b (new era) comes after
+                    }
+                }
+            }
+
+            // 3. Fallback: month, day, then era order
+            if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+            if ((a.day || 0) !== (b.day || 0)) return (a.day || 0) - (b.day || 0);
             const aEraOrder = eraOrder[aEra] || 999;
             const bEraOrder = eraOrder[bEra] || 999;
-            if (aEraOrder !== bEraOrder) return aEraOrder - bEraOrder;
-            // Use kanji year for proper 元年 ordering!
-            const aEraYear = getKanjiYearNumber(a.japaneseKanji);
-            const bEraYear = getKanjiYearNumber(b.japaneseKanji);
-            if (aEraYear !== bEraYear) return aEraYear - bEraYear;
-            if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
-            return (a.day || 0) - (b.day || 0);
+            return aEraOrder - bEraOrder;
         });
     }
 }
