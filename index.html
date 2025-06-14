@@ -659,13 +659,12 @@ document.addEventListener("DOMContentLoaded", function () {
         dots = [];
         yearLabels = [];
         yearLabelEventIndexes = [];
-        let lastYear = null;
-        const sortedEvents = sortEvents(events, byChapter);
+        let lastEraYear = "";
+    sortedEvents.forEach((event, index) => {
+        const currentEraYear = `${event.japaneseKanji || ""}_${event.year}`;
+        const isFirstOfEraYear = (currentEraYear !== lastEraYear);
 
-        sortedEvents.forEach((event, index) => {
-            const isFirstOfYear = (event.year !== lastYear);
-
-            if (isFirstOfYear) {
+       if (isFirstOfEraYear) {
                 const yearDiv = document.createElement("div");
                 yearDiv.className = "year-label";
                 yearDiv.innerHTML = `
@@ -676,12 +675,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 timeline.appendChild(yearDiv);
                 yearLabels.push(yearDiv);
                 yearLabelEventIndexes.push(eventDivs.length);
-                lastYear = event.year;
+                lastEraYear = currentEraYear;
             }
 
             const eventDiv = document.createElement("div");
             eventDiv.className = `event ${index % 2 === 0 ? "left" : "right"} hidden`;
-            if (isFirstOfYear) eventDiv.style.marginTop = "80px";
+            if (isFirstOfEraYear) eventDiv.style.marginTop = "80px";
             const lunarDate = getLunarDateString(event);
             eventDiv.innerHTML = `
                 <div class="event-content">
