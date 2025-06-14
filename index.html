@@ -611,6 +611,16 @@ const eraOrder = {
     // Match everything before first digit or 年
     return kanji.match(/^[^\d０-９]+/u)?.[0].replace(/年$/, "") || "";
 }
+    function getKanjiYearNumber(kanji) {
+    // E.g. "元治元年" -> 1, "慶応2年" -> 2, "文久3年" -> 3
+    if (!kanji) return 0;
+    const match = kanji.match(/([元\d０-９]+)年/u);
+    if (!match) return 0;
+    if (match[1] === '元') return 1;
+    // Convert full-width numerals to ASCII if present
+    const num = match[1].replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 65248));
+    return parseInt(num, 10);
+}
     // Helper: sort by date or chapter
     function sortEvents(events, byChapter) {
     if (byChapter) {
@@ -618,6 +628,7 @@ const eraOrder = {
             const aCh = a.chapter != null ? a.chapter : 9999;
             const bCh = b.chapter != null ? b.chapter : 9999;
             if (aCh !== bCh) return aCh - bCh;
+            // This line is fine for chapter order:
             if (a.year !== b.year) return a.year - b.year;
             if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
             return (a.day || 0) - (b.day || 0);
@@ -629,8 +640,10 @@ const eraOrder = {
             const aEraOrder = eraOrder[aEra] || 999;
             const bEraOrder = eraOrder[bEra] || 999;
             if (aEraOrder !== bEraOrder) return aEraOrder - bEraOrder;
-            if (a.year !== b.year) return a.year - b.year;
-            // Put undated events at the END, not start
+            // Use kanji year for proper 元年 ordering!
+            const aEraYear = getKanjiYearNumber(a.japaneseKanji);
+            const bEraYear = getKanjiYearNumber(b.japaneseKanji);
+            if (aEraYear !== bEraYear) return aEraYear - bEraYear;
             if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
             return (a.day || 0) - (b.day || 0);
         });
