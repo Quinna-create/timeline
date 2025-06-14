@@ -591,27 +591,45 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
     ];
-
+const eraOrder = {
+    "嘉永": 1,
+    "安政": 2,
+    "万延": 3,
+    "文久": 4,
+    "元治": 5,
+    "慶応": 6,
+    "明治": 7,
+    // add more as needed
+};
+    function getEraPrefix(kanji) {
+    if (!kanji) return "";
+    return kanji.replace(/[0-9０-９元年]+/g, ""); // remove numbers and "元年"
+}
     // Helper: sort by date or chapter
     function sortEvents(events, byChapter) {
-        if (byChapter) {
-            return events.slice().sort((a, b) => {
-                const aCh = a.chapter != null ? a.chapter : 9999;
-                const bCh = b.chapter != null ? b.chapter : 9999;
-                if (aCh !== bCh) return aCh - bCh;
-                if (a.year !== b.year) return a.year - b.year;
-                if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
-                return (a.day || 0) - (b.day || 0);
-            });
-        } else {
-            return events.slice().sort((a, b) => {
-                if (a.year !== b.year) return a.year - b.year;
-                if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
-                return (a.day || 0) - (b.day || 0);
-            });
-        }
+    if (byChapter) {
+        return events.slice().sort((a, b) => {
+            const aCh = a.chapter != null ? a.chapter : 9999;
+            const bCh = b.chapter != null ? b.chapter : 9999;
+            if (aCh !== bCh) return aCh - bCh;
+            if (a.year !== b.year) return a.year - b.year;
+            if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+            return (a.day || 0) - (b.day || 0);
+        });
+    } else {
+        return events.slice().sort((a, b) => {
+            // Era order first!
+            const aEra = getEraPrefix(a.japaneseKanji);
+            const bEra = getEraPrefix(b.japaneseKanji);
+            const aEraOrder = eraOrder[aEra] || 999;
+            const bEraOrder = eraOrder[bEra] || 999;
+            if (aEraOrder !== bEraOrder) return aEraOrder - bEraOrder;
+            if (a.year !== b.year) return a.year - b.year;
+            if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
+            return (a.day || 0) - (b.day || 0);
+        });
     }
-
+}
     // Helper: lunar date
     function getLunarDateString(event) {
         const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
