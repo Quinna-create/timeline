@@ -603,7 +603,8 @@ const eraOrder = {
 };
     function getEraPrefix(kanji) {
     if (!kanji) return "";
-    return kanji.replace(/[0-9０-９元年]+/g, ""); // remove numbers and "元年"
+    // Match everything before first digit or 年
+    return kanji.match(/^[^\d０-９]+/u)?.[0].replace(/年$/, "") || "";
 }
     // Helper: sort by date or chapter
     function sortEvents(events, byChapter) {
