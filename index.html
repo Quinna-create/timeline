@@ -659,8 +659,9 @@ document.addEventListener("DOMContentLoaded", function () {
         dots = [];
         yearLabels = [];
         yearLabelEventIndexes = [];
+        const sortedEvents = sortEvents(events, byChapter);
         let lastEraYear = "";
-    sortedEvents.forEach((event, index) => {
+        sortedEvents.forEach((event, index) => {
         const currentEraYear = `${event.japaneseKanji || ""}_${event.year}`;
         const isFirstOfEraYear = (currentEraYear !== lastEraYear);
 
