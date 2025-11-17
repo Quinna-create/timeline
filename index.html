@@ -417,8 +417,8 @@ document.addEventListener("DOMContentLoaded", function () {
     japaneseKanji: "元治元年",
     japaneseRomaji: "Genji 1",
     chapter: 4,
-    description: "Yamazaki returns to his dojo in Osaka to offer New Year's greetings to his master after having joined the Shinsengumi.",
-  },
+    description: "Yamazaki returns to his dojo in Osaka to offer New Year's greetings to his master after having joined the Shinsengumi."
+  },  
   {
     year: 1864, month: 6, day: 4,
     japaneseKanji: "元治元年",
@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
     japaneseKanji: "慶応3年",
     japaneseRomaji: "Keiō 3",
     chapter: 14,
-    description: "Abe Jūrō and Uchiumi Jūrō return from hunting to the Gessin-in. They were gone during the battle at Aburanokōji, and when they returny, they learn that their corps has been destroyed and most of their comrades slain. Abe and Uchiumi defect to the Satsuma army.",
+    description: "Abe Jūrō and Uchiumi Jūrō return from hunting to the Gessin-in. They were gone during the battle at Aburanokōji, and when they returny, they learn that their corps has been dest[...]",
   },
   {
     year: 1867, month: 12, day: 9,
@@ -550,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function () {
     japaneseKanji: "慶応2年",
     japaneseRomaji: "Keiō 2",
     chapter: 1,
-    description: "Tainoshin gets involved in a fight defending Suzuki Mikisaburō. The fallout from this minor scuffle kicks off a series of events which ends in the Goryo Eiji Incident, an intra-party split within the Shinsengumi",
+    description: "Tainoshin gets involved in a fight defending Suzuki Mikisaburō. The fallout from this minor scuffle kicks off a series of events which ends in the Goryo Eiji Incident, an intra-part[...]",
   },
   {
     year: 1866, month: 4, day: 1,
@@ -653,7 +653,7 @@ const eraOrder = {
     return kanji.match(/^[^\d０-９]+/u)?.[0].replace(/年$/, "") || "";
 }
     function getKanjiYearNumber(kanji) {
-    // E.g. "元治元年" -> 1, "慶応2年" -> 2, "文久3年" -> 3
+    // E.g. "元治元年" -> 1, "慶応2年" -> 2
     if (!kanji) return 0;
     const match = kanji.match(/([元\d０-９]+)年/u);
     if (!match) return 0;
@@ -742,14 +742,32 @@ const eraChangeDates = {
         });
     }
 }
-    // Helper: lunar date
+    // Helper: convert lunar month/day to natural-language phrase
     function getLunarDateString(event) {
-        if (event.month && event.day) {
-            return `Lunar: Month ${event.month}, Day ${event.day}`;
-        } else if (event.month) {
-            return `Lunar: Month ${event.month}`;
-        } else if (event.day) {
-            return `Lunar: Day ${event.day}`;
+        // ordinal helper: 1 -> 1st, 2 -> 2nd, 3 -> 3rd, 4 -> 4th, etc.
+        function ordinal(n) {
+            const num = parseInt(n, 10);
+            if (isNaN(num)) return n;
+            const j = num % 10;
+            const k = num % 100;
+            if (j === 1 && k !== 11) return num + "st";
+            if (j === 2 && k !== 12) return num + "nd";
+            if (j === 3 && k !== 13) return num + "rd";
+            return num + "th";
+        }
+
+        const hasMonth = event.month !== undefined && event.month !== null;
+        const hasDay = event.day !== undefined && event.day !== null;
+
+        if (hasMonth && hasDay) {
+            // "the 18th day of the 11th lunar month"
+            return `the ${ordinal(event.day)} day of the ${ordinal(event.month)} lunar month`;
+        } else if (hasMonth) {
+            // "the 11th lunar month"
+            return `the ${ordinal(event.month)} lunar month`;
+        } else if (hasDay) {
+            // "the 3rd day of the lunar month"
+            return `the ${ordinal(event.day)} day of the lunar month`;
         } else {
             return '';
         }
