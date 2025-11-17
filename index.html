@@ -301,14 +301,14 @@ document.addEventListener("DOMContentLoaded", function () {
     description: "Bunkyū Era begins on this day",
   },
   {
-    year: 1862, month: 2, day 8,
+    year: 1862, month: 2, day: 8,
     japaneseKanji: "文久2年",
     japaneseRomaji: "Bunkyū 2",
     chapter: 6,
     description: "Hijikata Toshizō and a cohort of recruits form the Rōshi Corps and march from Edo",
   },
  {
-    year: 1862, month: 2, day 10,
+    year: 1862, month: 2, day: 10,
     japaneseKanji: "文久2年",
     japaneseRomaji: "Bunkyū 2",
     chapter: 6,
@@ -369,13 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
     japaneseRomaji: "Bunkyū 3",
     chapter: 6,
     description: "Shinsengumi officially inaugurated",
-  },
-  {
-    year: 1863, month: 4, day: 13,
-    japaneseKanji: "文久3年",
-    japaneseRomaji: "Bunkyū 3",
-    chapter: 1,
-    description: "assasination of Kiyokawa Hachirō",
   },
   {
     year: 1863, month: 8,
@@ -559,13 +552,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chapter: 1,
     description: "Tainoshin gets involved in a fight defending Suzuki Mikisaburō. The fallout from this minor scuffle kicks off a series of events which ends in the Goryo Eiji Incident, an intra-party split within the Shinsengumi",
   },
-{
-    year: 1866, month: 3, day: 13,
-    japaneseKanji: "慶応2年",
-    japaneseRomaji: "Keiō 2",
-    chapter: 1,
-    description: "Tainoshin gets involved in a fight defending Suzuki Mikisaburō. The fallout from this minor scuffle kicks off a series of events which ends in the Goryo Eiji Incident, an intra-party split within the Shinsengumi",
-  },
   {
     year: 1866, month: 4, day: 1,
     japaneseKanji: "慶応2年",
@@ -662,6 +648,23 @@ const eraOrder = {
     const num = match[1].replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 65248));
     return parseInt(num, 10);
 }
+    
+    // Helper function to get numeric sort value from chapter field
+    function chapterSortValue(ch) {
+        // If null/undefined, return 9999 (so these go last)
+        if (ch == null) return 9999;
+        // If already a number, return it
+        if (typeof ch === 'number') return ch;
+        // If it's a string, extract the first integer
+        if (typeof ch === 'string') {
+            // Match patterns like "4 & 8", "4,8", "4-8" and extract first number
+            const match = ch.match(/\d+/);
+            if (match) return parseInt(match[0], 10);
+        }
+        // Fallback to 9999 if we can't parse it
+        return 9999;
+    }
+    
     // Map of era name to their change date (first day of the new era)
 const eraChangeDates = {
     '文久': { year: 1861, month: 2, day: 19 }, // Bunkyū 1
@@ -674,8 +677,8 @@ const eraChangeDates = {
     function sortEvents(events, byChapter) {
     if (byChapter) {
         return events.slice().sort((a, b) => {
-            const aCh = a.chapter != null ? a.chapter : 9999;
-            const bCh = b.chapter != null ? b.chapter : 9999;
+            const aCh = chapterSortValue(a.chapter);
+            const bCh = chapterSortValue(b.chapter);
             if (aCh !== bCh) return aCh - bCh;
             if (a.year !== b.year) return a.year - b.year;
             if ((a.month || 0) !== (b.month || 0)) return (a.month || 0) - (b.month || 0);
@@ -727,25 +730,14 @@ const eraChangeDates = {
 }
     // Helper: lunar date
     function getLunarDateString(event) {
-        const dayStr = event.day ? `the ${event.day}${getOrdinalSuffix(event.day)} day` : '';
-        const monthStr = event.month ? `the ${event.month}${getOrdinalSuffix(event.month)} lunar month` : '';
-        if (event.day && event.month) {
-            return `${dayStr} of ${monthStr}`;
-        } else if (event.day) {
-            return dayStr;
+        if (event.month && event.day) {
+            return `Lunar: Month ${event.month}, Day ${event.day}`;
         } else if (event.month) {
-            return monthStr;
+            return `Lunar: Month ${event.month}`;
+        } else if (event.day) {
+            return `Lunar: Day ${event.day}`;
         } else {
             return '';
-        }
-    }
-    function getOrdinalSuffix(n) {
-        if (n > 10 && n < 20) return 'th';
-        switch (n % 10) {
-            case 1:  return 'st';
-            case 2:  return 'nd';
-            case 3:  return 'rd';
-            default: return 'th';
         }
     }
 
