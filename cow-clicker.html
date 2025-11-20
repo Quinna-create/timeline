@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cow Clicker Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-area {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stats {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .stat-item {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .cow-button {
+            width: 250px;
+            height: 250px;
+            background: #fff;
+            border: 5px solid #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            user-select: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cow-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cow-button:active {
+            transform: scale(0.95);
+        }
+
+        .click-animation {
+            animation: clickPop 0.3s ease-out;
+        }
+
+        @keyframes clickPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .upgrades-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .upgrades-container h2 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .upgrade-item {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upgrade-item:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        .upgrade-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .upgrade-item.disabled:hover {
+            transform: none;
+        }
+
+        .upgrade-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .upgrade-description {
+            font-size: 0.9em;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+
+        .upgrade-cost {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .upgrade-owned {
+            float: right;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .floating-number {
+            position: fixed;
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+        }
+
+        .reset-button {
+            background: rgba(255, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .reset-button:hover {
+            background: rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Scrollbar styling */
+        .upgrades-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .upgrades-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .upgrades-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .upgrades-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🐮 Cow Clicker 🐮</h1>
+        
+        <div class="game-area">
+            <div class="left-panel">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Clicks:</span>
+                        <div class="stat-value" id="clickCount">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Per Click:</span>
+                        <div class="stat-value" id="clickPower">1</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Per Second:</span>
+                        <div class="stat-value" id="cps">0</div>
+                    </div>
+                </div>
+                
+                <div class="cow-button" id="cowButton">
+                    🐮
+                </div>
+                
+                <button class="reset-button" id="resetButton">Reset Game</button>
+            </div>
+            
+            <div class="right-panel">
+                <div class="upgrades-container" id="upgradesContainer">
+                    <h2>Upgrades</h2>
+                    <!-- Upgrades will be dynamically generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            clicks: 0,
+            clickPower: 1,
+            clicksPerSecond: 0,
+            upgrades: {}
+        };
+
+        // Upgrade definitions
+        const upgrades = [
+            {
+                id: 'cursor',
+                name: 'Auto-Clicker',
+                description: 'Automatically clicks the cow',
+                baseCost: 15,
+                costMultiplier: 1.15,
+                cps: 0.1,
+                clickPower: 0
+            },
+            {
+                id: 'grandma',
+                name: 'Farming Grandma',
+                description: 'A grandma to help with the cow',
+                baseCost: 100,
+                costMultiplier: 1.15,
+                cps: 1,
+                clickPower: 0
+            },
+            {
+                id: 'farm',
+                name: 'Small Farm',
+                description: 'A small farm with multiple cows',
+                baseCost: 500,
+                costMultiplier: 1.15,
+                cps: 5,
+                clickPower: 0
+            },
+            {
+                id: 'factory',
+                name: 'Cow Factory',
+                description: 'Mass production of cow clicks',
+                baseCost: 3000,
+                costMultiplier: 1.15,
+                cps: 25,
+                clickPower: 0
+            },
+            {
+                id: 'clickUpgrade1',
+                name: 'Better Fingers',
+                description: '+1 click power',
+                baseCost: 50,
+                costMultiplier: 2,
+                cps: 0,
+                clickPower: 1
+            },
+            {
+                id: 'clickUpgrade2',
+                name: 'Strong Hands',
+                description: '+5 click power',
+                baseCost: 500,
+                costMultiplier: 2,
+                cps: 0,
+                clickPower: 5
+            },
+            {
+                id: 'clickUpgrade3',
+                name: 'Mechanical Arm',
+                description: '+10 click power',
+                baseCost: 2500,
+                costMultiplier: 2,
+                cps: 0,
+                clickPower: 10
+            },
+            {
+                id: 'mine',
+                name: 'Cow Mine',
+                description: 'Deep underground cow clicking',
+                baseCost: 10000,
+                costMultiplier: 1.15,
+                cps: 100,
+                clickPower: 0
+            },
+            {
+                id: 'bank',
+                name: 'Cow Bank',
+                description: 'Clicks generate compound interest',
+                baseCost: 50000,
+                costMultiplier: 1.15,
+                cps: 500,
+                clickPower: 0
+            },
+            {
+                id: 'temple',
+                name: 'Cow Temple',
+                description: 'Divine clicks from above',
+                baseCost: 250000,
+                costMultiplier: 1.15,
+                cps: 2500,
+                clickPower: 0
+            }
+        ];
+
+        // Initialize upgrades owned count
+        upgrades.forEach(upgrade => {
+            if (!gameState.upgrades[upgrade.id]) {
+                gameState.upgrades[upgrade.id] = 0;
+            }
+        });
+
+        // DOM elements
+        const cowButton = document.getElementById('cowButton');
+        const clickCountEl = document.getElementById('clickCount');
+        const clickPowerEl = document.getElementById('clickPower');
+        const cpsEl = document.getElementById('cps');
+        const upgradesContainer = document.getElementById('upgradesContainer');
+        const resetButton = document.getElementById('resetButton');
+
+        // Load saved game
+        function loadGame() {
+            const saved = localStorage.getItem('cowClickerSave');
+            if (saved) {
+                const savedState = JSON.parse(saved);
+                gameState = savedState;
+                // Ensure all upgrades exist in the loaded state
+                upgrades.forEach(upgrade => {
+                    if (!gameState.upgrades[upgrade.id]) {
+                        gameState.upgrades[upgrade.id] = 0;
+                    }
+                });
+            }
+            updateDisplay();
+            renderUpgrades();
+        }
+
+        // Save game
+        function saveGame() {
+            localStorage.setItem('cowClickerSave', JSON.stringify(gameState));
+        }
+
+        // Calculate current upgrade cost
+        function getUpgradeCost(upgrade) {
+            const owned = gameState.upgrades[upgrade.id] || 0;
+            return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, owned));
+        }
+
+        // Handle cow click
+        cowButton.addEventListener('click', function(e) {
+            gameState.clicks += gameState.clickPower;
+            
+            // Visual feedback
+            cowButton.classList.add('click-animation');
+            setTimeout(() => cowButton.classList.remove('click-animation'), 300);
+            
+            // Floating number animation
+            createFloatingNumber(e.clientX, e.clientY, '+' + gameState.clickPower);
+            
+            updateDisplay();
+            saveGame();
+        });
+
+        // Create floating number effect
+        function createFloatingNumber(x, y, text) {
+            const floatingNum = document.createElement('div');
+            floatingNum.className = 'floating-number';
+            floatingNum.textContent = text;
+            floatingNum.style.left = x + 'px';
+            floatingNum.style.top = y + 'px';
+            document.body.appendChild(floatingNum);
+            
+            setTimeout(() => {
+                floatingNum.remove();
+            }, 1000);
+        }
+
+        // Render upgrades
+        function renderUpgrades() {
+            // Clear existing upgrades (except the title)
+            const title = upgradesContainer.querySelector('h2');
+            upgradesContainer.innerHTML = '';
+            upgradesContainer.appendChild(title);
+            
+            upgrades.forEach(upgrade => {
+                const upgradeEl = document.createElement('div');
+                upgradeEl.className = 'upgrade-item';
+                
+                const cost = getUpgradeCost(upgrade);
+                const owned = gameState.upgrades[upgrade.id] || 0;
+                const canAfford = gameState.clicks >= cost;
+                
+                if (!canAfford) {
+                    upgradeEl.classList.add('disabled');
+                }
+                
+                upgradeEl.innerHTML = `
+                    <div class="upgrade-name">
+                        ${upgrade.name}
+                        <span class="upgrade-owned">${owned}</span>
+                    </div>
+                    <div class="upgrade-description">${upgrade.description}</div>
+                    <div class="upgrade-cost">Cost: ${formatNumber(cost)} clicks</div>
+                `;
+                
+                upgradeEl.addEventListener('click', () => buyUpgrade(upgrade));
+                
+                upgradesContainer.appendChild(upgradeEl);
+            });
+        }
+
+        // Buy upgrade
+        function buyUpgrade(upgrade) {
+            const cost = getUpgradeCost(upgrade);
+            
+            if (gameState.clicks >= cost) {
+                gameState.clicks -= cost;
+                gameState.upgrades[upgrade.id] = (gameState.upgrades[upgrade.id] || 0) + 1;
+                
+                // Recalculate stats
+                recalculateStats();
+                
+                updateDisplay();
+                renderUpgrades();
+                saveGame();
+            }
+        }
+
+        // Recalculate click power and CPS
+        function recalculateStats() {
+            gameState.clickPower = 1;
+            gameState.clicksPerSecond = 0;
+            
+            upgrades.forEach(upgrade => {
+                const owned = gameState.upgrades[upgrade.id] || 0;
+                gameState.clickPower += upgrade.clickPower * owned;
+                gameState.clicksPerSecond += upgrade.cps * owned;
+            });
+        }
+
+        // Update display
+        function updateDisplay() {
+            clickCountEl.textContent = formatNumber(gameState.clicks);
+            clickPowerEl.textContent = formatNumber(gameState.clickPower);
+            cpsEl.textContent = formatNumber(gameState.clicksPerSecond);
+        }
+
+        // Format large numbers
+        function formatNumber(num) {
+            if (num < 1000) return Math.floor(num).toString();
+            if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
+            if (num < 1000000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num < 1000000000000) return (num / 1000000000).toFixed(1) + 'B';
+            return (num / 1000000000000).toFixed(1) + 'T';
+        }
+
+        // Auto-clicker (runs every 100ms)
+        setInterval(() => {
+            if (gameState.clicksPerSecond > 0) {
+                gameState.clicks += gameState.clicksPerSecond / 10;
+                updateDisplay();
+            }
+        }, 100);
+
+        // Auto-save every 5 seconds
+        setInterval(() => {
+            saveGame();
+        }, 5000);
+
+        // Reset game
+        resetButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset your game? This cannot be undone!')) {
+                localStorage.removeItem('cowClickerSave');
+                gameState = {
+                    clicks: 0,
+                    clickPower: 1,
+                    clicksPerSecond: 0,
+                    upgrades: {}
+                };
+                upgrades.forEach(upgrade => {
+                    gameState.upgrades[upgrade.id] = 0;
+                });
+                updateDisplay();
+                renderUpgrades();
+                saveGame();
+            }
+        });
+
+        // Initialize game
+        loadGame();
+        recalculateStats();
+    </script>
+</body>
+</html>
